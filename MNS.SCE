@@ -459,18 +459,31 @@ you to write upon when standing.
 Workshop
 
 
+This is a large shop well arranged and fully equipped with all sort of tools used
+by carpenters and wood toy makers.
+
+
+A lantern burns on a wooden workbench, giving adequate illumination to the room.
 /10
 In the Basement
 
 
+This part of the basement is poorly lit, but you can make your way around. There
+are exits to the west and to the south.
+
+
+The stairs take you back up to the corridor.
 /11
 Spare Parts Room
 
 
+Shelves of cupboards, most of them unopened for years, line every wall of this
+windowless room.
 /12
 Store Room
 
-
+The store room contains old, unfinished toys. There is firewood stacked and prepared
+in a pile of wooden logs.
 ;------------------------------------------------------------------------------
 /CON    ;Connections
 /0
