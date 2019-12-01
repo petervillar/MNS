@@ -159,6 +159,7 @@ ASCEN   10      verb
 D       11      noun
 DOWN    11      noun
 DESCE   11      verb
+THREA	12	noun		; So we can thread the needle with a thread
 ;                       Nouns   <20 means can be used as verbs
 ;                               <50 means a proper noun ie not an 'IT'
 I       14      noun
@@ -166,6 +167,11 @@ INVEN   14      noun
 ALL     20      noun
 LOT     20      noun
 EVERY   20      noun
+;
+BUTTO	21	noun		; A button
+NEEDL	22	noun		; A needle
+SPECT	23	noun		; A pair of spectacles
+NOTE	24	noun		; different notes
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -200,6 +206,9 @@ HARD    6       adjective
 SOFT    7       adjective
 SHORT   8       adjective
 LONG    9       adjective
+DANCER	10	adjective
+PRANCER	11	adjective
+COMET	12	adjective
 ;                               Adverbs
 QUICK   2       adverb
 SLOWL   3       adverb
@@ -248,11 +257,9 @@ I can't go in that direction.
 I can't do that.
 
 /9
-I have with me:
-
+You are carrying 
 /10
-I am wearing:
-
+You are wearing 
 /11 ;*Spare
 /12
 Are you sure? 
@@ -384,7 +391,14 @@ Tape or Disc?
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
-A pocket torch. (lit)
+A black button
+/1
+A needle
+/2
+/3
+/4
+/5
+/6
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
@@ -401,6 +415,7 @@ No shift can possibly be more exciting and rewarding than this one!
 
 
 /1
+; Inside the cupboard
 /2
 Entrance Hall
 
@@ -454,6 +469,8 @@ Santa's Office
 A massive bed covered in a thick duvet an a pile of pillows dominates the center
 of the room. Against one of the walls you can see a big desk, high enough for
 you to write upon when standing.
+
+The room's large window is slightly open.
 ; with a sea of papers.
 /9
 Workshop
@@ -481,6 +498,7 @@ Shelves of cupboards, most of them unopened for years, line every wall of this
 windowless room.
 /12
 Store Room
+
 
 The store room contains old, unfinished toys. There is firewood stacked and prepared
 in a pile of wooden logs.
@@ -527,7 +545,13 @@ W 11
 /OBJ    ;Object Definitions
 ;obj  starts  weight    c w  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0    noun   adjective
 ;num    at
-/0      CARRIED 1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    TORCH  _
+/0      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUTTO  _
+/1      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  _
+/2      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    THREA  _
+/3      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
+/4      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   DANCE
+/5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
+/6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   COMET
 ;------------------------------------------------------------------------------
 /PRO 0       ;Main Location Loop
 
@@ -698,5 +722,6 @@ _       _       RESET                   ; Set objects to start location & Flag 1
                 LET     MaxCarr  4
                 SET     CPNoun
                 SET     CPAdject
+		LET	53	64	; object lists printed as sentences.
                 GOTO    2               ; Main game
 
