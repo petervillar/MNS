@@ -242,7 +242,8 @@ THEN    2       conjugation
 /0
 It's too dark to see anything.
 /1
-I can also see: 
+
+I can also see 
 /2
 /3
 /4
@@ -388,6 +389,9 @@ Tape or Disc?
 ;------------------------------------------------------------------------------
 /MTX    ;Message Texts
 /0
+/1
+/2
+/3
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -396,6 +400,7 @@ A black button
 A needle
 /2
 /3
+A pair of spectacles
 /4
 /5
 /6
@@ -548,7 +553,7 @@ W 11
 /0      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUTTO  _
 /1      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  _
 /2      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    THREA  _
-/3      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
+/3      6	1       _ Y  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
 /4      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   DANCE
 /5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
 /6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   COMET
