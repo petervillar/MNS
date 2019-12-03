@@ -390,8 +390,29 @@ Tape or Disc?
 /MTX    ;Message Texts
 /0
 /1
+*** The End, Merry Christmas ***
 /2
+Entrance Hall
 /3
+Corridor
+/4
+End of the Corridor
+/5
+Kitchen
+/6
+Bathroom
+/7
+Living Room
+/8
+Santa's Office
+/9
+Workshop
+/10
+In the Basement
+/11
+Spare Parts Room
+/12
+Store Room
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -407,6 +428,10 @@ A pair of spectacles
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
+     Merry Night Shift
+  - A Christmas adventure -
+
+
 
 Christmas eve is tonight and Santa Claus is off to work...
 
@@ -422,55 +447,34 @@ No shift can possibly be more exciting and rewarding than this one!
 /1
 ; Inside the cupboard
 /2
-Entrance Hall
-
-
 This is the entrance to Santa Claus workshop and home. A dimly lit corridor
 leads east to the inside of the house.
 
 
 Oddly enough, there is no Christmas tree at Santa's.
 /3
-Corridor
-
-
 You are in a dimly lit corridor, leading north to the kitchen and south
 to the living room. The corridor continues to the east.
 /4
-End of the Corridor
-
-
 This is the end of the corridor, with exits north towards the bathroom and
 south towards Santa's office.
 
 
 From here a flight of stairs leads down to the basement.
 /5
-Kitchen
-
-
 The kitchen is warm and welcoming, and the smell of homemade cinnamon rolls
 fills the air.
 /6
-Bathroom
-
-
 The bathroom is small, with a clawfoot tub and blue and white tiled
 walls. A mirror with shelf and washbasin underneath hangs against one
 of the tiled walls.
 /7
-Living Room
-
-
 A cosy living room, with a soft rug that warms the space and gives a nice
 homely feel.
 
 
 Wood is burning in the fireplace.
 /8
-Santa's Office
-
-
 A massive bed covered in a thick duvet an a pile of pillows dominates the center
 of the room. Against one of the walls you can see a big desk, high enough for
 you to write upon when standing.
@@ -478,33 +482,21 @@ you to write upon when standing.
 The room's large window is slightly open.
 ; with a sea of papers.
 /9
-Workshop
-
-
 This is a large shop well arranged and fully equipped with all sort of tools used
 by carpenters and wood toy makers.
 
 
 A lantern burns on a wooden workbench, giving adequate illumination to the room.
 /10
-In the Basement
-
-
 This part of the basement is poorly lit, but you can make your way around. There
 are exits to the west and to the south.
 
 
 The stairs take you back up to the corridor.
 /11
-Spare Parts Room
-
-
 Shelves of cupboards, most of them unopened for years, line every wall of this
 windowless room.
 /12
-Store Room
-
-
 The store room contains old, unfinished toys. There is firewood stacked and prepared
 in a pile of wooden logs.
 ;------------------------------------------------------------------------------
@@ -539,7 +531,7 @@ S 11
 /10
 U 4
 S 12
-W 10
+W 9
 /11
 N 9
 E 12
@@ -575,11 +567,16 @@ _       _       WINDOW  0               ; Select graphics window
 _       _       PICTURE [Player]        ; If there is a picture, Load it
                 DISPLAY [DarkF]         ; & Display it if not dark, else CLS
 
+_	_	WINDOW	2
+		CLS
+		MES	[38]
+
 _       _       WINDOW  1
                 NOTZERO DarkF           ; Dark
                 SYSMESS 0
 
 _       _       ZERO    DarkF
+		CLS
                 DESC    [Player]        ; Doesn't exit loop now
 
 _       _       PROCESS 3
@@ -706,9 +703,14 @@ LOOK    _       RESTART
 ;------------------------------------------------------------------------------
 /PRO 6 ; Initialise the DAAD system
 
+_	_	WINDOW	2
+_	_	WINAT	0	0
+		WINSIZE	1	127
+		CLS
+
 _       _       WINDOW  1               ; Windows are random
-_       _       WINAT   0       0	; 14?
-                WINSIZE 25      127     ; Maximum window
+_       _       WINAT   2       0	; 14?
+                WINSIZE 23      127     ; Maximum window
                 CLS
                 DESC    0               ; Introduction
                 ANYKEY
