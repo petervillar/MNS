@@ -171,6 +171,7 @@ EVERY   20      noun
 BUTTO	21	noun		; A button
 NEEDL	22	noun		; A needle
 SPECT	23	noun		; A pair of spectacles
+GLASS	23	noun		; A pair of spectacles
 NOTE	24	noun		; different notes
 ;
 TORCH   100     noun
@@ -191,11 +192,12 @@ LOAD    27      verb
 RAMSA   28      verb
 RAMLO   29      verb
 LOOK    30      verb
-EXAMI   30      verb
 SAY     31      verb
 ASK     31      verb
 TALK    31      verb
 SPEAK   31      verb
+X	30      verb
+EXAMI   30      verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -206,8 +208,8 @@ HARD    6       adjective
 SOFT    7       adjective
 SHORT   8       adjective
 LONG    9       adjective
-DANCER	10	adjective
-PRANCER	11	adjective
+DANCE	10	adjective
+PRANC	11	adjective
 COMET	12	adjective
 ;                               Adverbs
 QUICK   2       adverb
@@ -413,6 +415,30 @@ In the Basement
 Spare Parts Room
 /12
 Store Room
+/13
+It is a black, mushroom domed button.
+/14
+A sewing needle, used for hand-sewing.
+/15
+It is basically a hand sewing thread.
+/16
+Comfortable, but not particularly stylish.
+/17
+The note says:
+
+Quest #1
+/18
+The note says:
+
+Quest #2
+/19
+The note says:
+
+Quest #3
+/20
+The needle is threaded and ready to go.
+/21
+You painstakingly pass the thread through the tiny eye of the needle.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -420,11 +446,15 @@ A black button
 /1
 A needle
 /2
+A sewing thread
 /3
 A pair of spectacles
 /4
+A note from Dancer
 /5
+A note from Prancer
 /6
+A note from Comet
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
@@ -544,11 +574,12 @@ W 11
 ;num    at
 /0      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUTTO  _
 /1      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  _
-/2      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    THREA  _
+/2      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    THREA  _
 /3      6	1       _ Y  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
 /4      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   DANCE
 /5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
 /6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   COMET
+/7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  THREA
 ;------------------------------------------------------------------------------
 /PRO 0       ;Main Location Loop
 
@@ -664,6 +695,9 @@ I       _       SYSMESS 9
                 LISTAT  WORN
                 DONE
 
+EXAMI	_	PROCESS 7
+		DONE
+
 GET     ALL     DOALL   HERE
 GET     _       AUTOG
                 DONE
@@ -731,4 +765,23 @@ _       _       RESET                   ; Set objects to start location & Flag 1
                 SET     CPAdject
 		LET	53	64	; object lists printed as sentences.
                 GOTO    2               ; Main game
+
+;------------------------------------------------------------------------------
+/PRO 7 ; Examine stuff
+
+EXAMI	BUTTO	PRESENT	0
+		MESSAGE	13
+		DONE
+
+EXAMI	NEEDL	PRESENT	1
+		MESSAGE	14
+		DONE
+
+EXAMI	THREA	PRESENT	2
+		MESSAGE	15
+		DONE
+
+EXAMI	SPECT	PRESENT	3
+		MESSAGE	16
+		DONE
 
