@@ -159,7 +159,6 @@ ASCEN   10      verb
 D       11      noun
 DOWN    11      noun
 DESCE   11      verb
-THREA	12	noun		; So we can thread the needle with a thread
 ;                       Nouns   <20 means can be used as verbs
 ;                               <50 means a proper noun ie not an 'IT'
 I       14      noun
@@ -167,12 +166,27 @@ INVEN   14      noun
 ALL     20      noun
 LOT     20      noun
 EVERY   20      noun
+BIRD	21	noun
+SOMEO	21	noun
+SOMET	21	noun
 ;
-BUTTO	21	noun		; A button
-NEEDL	22	noun		; A needle
-SPECT	23	noun		; A pair of spectacles
-GLASS	23	noun		; A pair of spectacles
-NOTE	24	noun		; different notes
+BUTTO	50	noun		; A button
+NEEDL	51	noun		; A needle
+SPECT	52	noun		; A pair of spectacles
+GLASS	52	noun		; A pair of spectacles
+NOTE	53	noun		; different notes
+ELEPH	54	noun		; toy elephant
+TRUMP	55	noun		; toy trumpet
+ATOMI	56	noun		; perfume atomizer
+SQUEE	57	noun		; rubber squeezer
+DUCK	58	noun		; a rubber duck
+WORKB	59	noun		; workbench
+COTTO	60	noun		; So we can thread the needle with a thread
+STRAN	61	noun		; So we can thread the needle with a thread
+MIRRO	62	noun		; the mirror
+SHELF	63	noun		; the shelf
+DOLL	64	noun		; the rag doll
+WINDO	65	noun		; santa's window
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -192,12 +206,18 @@ LOAD    27      verb
 RAMSA   28      verb
 RAMLO   29      verb
 LOOK    30      verb
+X	30      verb
+EXAMI   30      verb
+READ	30      verb
 SAY     31      verb
 ASK     31      verb
 TALK    31      verb
 SPEAK   31      verb
-X	30      verb
-EXAMI   30      verb
+THREA	31	verb
+SEW	32	verb
+OPEN	33	verb
+CLOSE	34	verb
+WAIT	35	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -208,9 +228,8 @@ HARD    6       adjective
 SOFT    7       adjective
 SHORT   8       adjective
 LONG    9       adjective
-DANCE	10	adjective
-PRANC	11	adjective
-COMET	12	adjective
+DANCE	138	adjective		; dancer the reindeer
+PRANC	139	adjective		; prancer the reindeer
 ;                               Adverbs
 QUICK   2       adverb
 SLOWL   3       adverb
@@ -245,7 +264,7 @@ THEN    2       conjugation
 It's too dark to see anything.
 /1
 
-I can also see 
+You can also see 
 /2
 /3
 /4
@@ -254,10 +273,10 @@ I can also see
 I was not able to understand any of that.
 
 /7
-I can't go in that direction.
+You can't go in that direction.
 
 /8
-I can't do that.
+You can't do that.
 
 /9
 You are carrying 
@@ -270,7 +289,7 @@ Are you sure?
 Would you like another go? 
 /14 ;*Spare
 /15
-OK.
+Ok.
 
 /16
 Press any key to continue.
@@ -282,25 +301,25 @@ Press any key to continue.
 /21 ;*You have scored
 /22 ;*%[CR]
 /23
-I'm not wearing one of those.
+You are not wearing one of those.
 
 /24
-I can't. I'm wearing the _.
+You can't. You are wearing the _.
 
 /25
-I already have the _.
+You already have the _.
 
 /26
 There isn't one of those here.
 
 /27
-I can't carry any more things.
+You can't carry any more things.
 
 /28
-I don't have one of those.
+You don't have one of those.
 
 /29
-I'm already wearing the _.
+You are already wearing the _.
 
 /30     ;One upper case character only
 Y
@@ -314,31 +333,31 @@ More...
 /34 ;*Spare
 /35
 
-Time passes...
+Time passes..
 
 /36
-I now have the _.
+You now have the _.
 
 /37
-I'm now wearing the _.
+You are now wearing the _.
 
 /38
-I've removed the _.
+You have removed the _.
 
 /39
-I've dropped the _.
+You have dropped the _.
 
 /40
-I can't wear the _.
+You can't wear the _.
 
 /41
-I can't remove the _.
+You can't remove the _.
 
 /42
-I can't remove the _. My hands are full.
+You can't remove the _. Your hands are full.
 
 /43
-The _ weighs too much for me.
+The _ weighs too much.
 
 /44
 The _ is in the 
@@ -352,10 +371,10 @@ The _ isn't in the
 .
 
 /49
-I don't have the _.
+You don't have the _.
 
 /50
-I'm not wearing the _.
+You are not wearing the _.
 
 /51
 .
@@ -363,7 +382,7 @@ I'm not wearing the _.
 /52
 There isn't one of those in the 
 /53
-Nothing.
+nothing.
 
 /54 ;Letter for Tape
 T
@@ -424,21 +443,80 @@ It is basically a hand sewing thread.
 /16
 Comfortable, but not particularly stylish.
 /17
-The note says:
+This note comes directly from Dancer the reindeer, and it says:
 
-Quest #1
+
+"One of the rag dolls came with a missing eye and Santa would
+like to have it mended.
+
+
+Please give it back to our feathered friend once you are done.
+
+
+D."
 /18
-The note says:
+This note comes directly from Prancer the reindeer, and it says:
 
-Quest #2
+Santa is probably beginning to get drunk as none of us can see what is
+wrong with this elephant.
+
+Whatever it is, please have it fixed and give it back to our
+feathered friend once you are done.
+
+P.
 /19
-The note says:
-
-Quest #3
-/20
 The needle is threaded and ready to go.
-/21
+/20
 You painstakingly pass the thread through the tiny eye of the needle.
+/21
+The workbench is extremely stable and strong.
+/22
+It seems that old Santa finally has mended his torn socks, as he left a
+needle and a strand of cotton thread lying on it.
+/23
+Your poor eyes deserve better lighting for needlework.
+/24
+Your sight is too poor for you to do any work.
+/25
+You surely are missing something.
+/26
+It is a small, rustic wood shelf.
+/27
+Your long-lost spectacles are perched on the shelf.
+/28
+You see nothing special.
+/29
+Your reflection looks at you straight in the eye.
+/30
+A sweet and soft rag doll, made from scraps of fabrics. 
+/31
+The doll is missing one eye.
+/32
+The room's large window is slightly open.
+/33
+The room's large window is closed.
+/34
+You hear someone or something tapping at one of the windows.
+/35
+One of Santa's little bird messengers is waiting outside.
+/36
+A little bird enters through the opening and lands on the desk.
+/37
+You open the window just a little, and you get a nice breeze from the outside.
+/38
+It's already open.
+/39
+You close the window.
+/40
+You can barely make out something little and feathery outside the window.
+/41
+The little bird has come on a special errand from Santa!
+/42
+A little bird is sitting on the table.
+/43
+The bird is carrying a note and what looks like a doll.
+/44
+Which note do you mean?
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -446,7 +524,7 @@ A black button
 /1
 A needle
 /2
-A sewing thread
+A strand of cotton thread
 /3
 A pair of spectacles
 /4
@@ -454,12 +532,24 @@ A note from Dancer
 /5
 A note from Prancer
 /6
-A note from Comet
+A stuffed toy elephant
+/7
+A toy trumpet
+/8
+A perfume atomizer
+/9
+A rubber squeezer
+/10
+A rubber duck 
+/11
+A rag doll
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
-     Merry Night Shift
-  - A Christmas adventure -
+       Merry Night Shift
+
+
+    - A Christmas adventure -
 
 
 
@@ -479,9 +569,6 @@ No shift can possibly be more exciting and rewarding than this one!
 /2
 This is the entrance to Santa Claus workshop and home. A dimly lit corridor
 leads east to the inside of the house.
-
-
-Oddly enough, there is no Christmas tree at Santa's.
 /3
 You are in a dimly lit corridor, leading north to the kitchen and south
 to the living room. The corridor continues to the east.
@@ -492,24 +579,19 @@ south towards Santa's office.
 
 From here a flight of stairs leads down to the basement.
 /5
-The kitchen is warm and welcoming, and the smell of homemade cinnamon rolls
-fills the air.
+The kitchen is warm and welcoming, and the smell of homemade cinnamon
+rolls fills the air.
 /6
-The bathroom is small, with a clawfoot tub and blue and white tiled
-walls. A mirror with shelf and washbasin underneath hangs against one
-of the tiled walls.
+The bathroom is small, with a clawfoot tub and white tiled walls.
+A mirror with shelf and washbasin underneath hangs against one
+of the walls.
 /7
 A cosy living room, with a soft rug that warms the space and gives a nice
 homely feel.
-
-
-Wood is burning in the fireplace.
 /8
 A massive bed covered in a thick duvet an a pile of pillows dominates the center
 of the room. Against one of the walls you can see a big desk, high enough for
 you to write upon when standing.
-
-The room's large window is slightly open.
 ; with a sea of papers.
 /9
 This is a large shop well arranged and fully equipped with all sort of tools used
@@ -572,14 +654,18 @@ W 11
 /OBJ    ;Object Definitions
 ;obj  starts  weight    c w  5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0    noun   adjective
 ;num    at
-/0      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUTTO  _
-/1      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  _
-/2      CARRIED	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    THREA  _
-/3      6	1       _ Y  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
+/0      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUTTO  _
+/1      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  _
+/2      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    STRAN  _
+/3      252	1       _ Y  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SPECT  _
 /4      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   DANCE
 /5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
-/6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   COMET
-/7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NEEDL  THREA
+/6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ELEPH  _
+/7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    TRUMP  _
+/8      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ATOMI  _
+/9      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SQUEE  _
+/10     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DUCK   _
+/11     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DOLL   _
 ;------------------------------------------------------------------------------
 /PRO 0       ;Main Location Loop
 
@@ -684,18 +770,55 @@ _       _       NEWLINE
 ;_       _       PRESENT 0               ;If the light source is present...
 ;                LISTOBJ                 ;List the objects
 
+_	_	AT	8		; Santa's office
+		ZERO	66		; Window is closed
+		NEWLINE
+		MESSAGE	33
+
+_	_	AT	8		; Santa's office
+		NOTZERO	66		; Window is opened
+		NEWLINE
+		MESSAGE	32
+
+_	_	AT	8		; At Santa's office
+		EQ	65	1	; bird waiting outside
+		NEWLINE
+		MESSAGE	35		; say it
+
+_	_	AT	8		; At Santa's office
+		EQ	65	2	; bird waiting inside
+		NEWLINE
+		MESSAGE	42		; say it
+
 ;------------------------------------------------------------------------------
 /PRO 4 ; Old process 2
+
+_	_	PROCESS	9		; The bird
+
 ;------------------------------------------------------------------------------
 /PRO 5 ; Command decoder
 
 I       _       SYSMESS 9
                 LISTAT  CARRIED
+		NEWLINE
                 SYSMESS 10
                 LISTAT  WORN
                 DONE
 
 EXAMI	_	PROCESS 7
+		DONE
+
+THREA	NEEDL	PROCESS	8
+
+OPEN	WINDO	AT	8		; at santa's office
+		ZERO	66		; window is closed
+		SET	66		; open it
+		MESSAGE	37		; tell it to player
+		DONE
+
+OPEN	WINDOW	AT	8		; at santa's office
+		NOTZERO	66		; is it open?
+		MESSAGE	38		; already open
 		DONE
 
 GET     ALL     DOALL   HERE
@@ -764,24 +887,156 @@ _       _       RESET                   ; Set objects to start location & Flag 1
                 SET     CPNoun
                 SET     CPAdject
 		LET	53	64	; object lists printed as sentences.
+		SET	65		; Bird begins away
                 GOTO    2               ; Main game
 
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
 
-EXAMI	BUTTO	PRESENT	0
+_	BUTTO	PRESENT	0
 		MESSAGE	13
 		DONE
 
-EXAMI	NEEDL	PRESENT	1
+_	NEEDL	PRESENT	1
 		MESSAGE	14
+		ISAT	2	252
+		MESSAGE	19
 		DONE
 
-EXAMI	THREA	PRESENT	2
+_	STRAN	PRESENT	2
 		MESSAGE	15
 		DONE
 
-EXAMI	SPECT	PRESENT	3
+_	SPECT	PRESENT	3
 		MESSAGE	16
 		DONE
+
+_	WORKB	AT	9
+		ISAT	1	252		; the needle won't disappear
+		MESSAGE	21			; but the thread will
+		NEWLINE
+		MESSAGE	22
+		CREATE	1			; needle
+		CREATE	2			; thread
+		DONE
+
+_	WORKB	AT	9
+		MESSAGE	21
+		DONE
+
+_	MIRRO	AT	6			; at the bathroom
+		MESSAGE	29			; reflection looks at you
+		DONE
+
+_	SHELF	AT	6			; at the bathroom
+		ISAT	3	252		; spectacles not created
+		MES	26
+		SPACE
+		MESSAGE	27
+		CREATE	3
+		DONE
+
+_	SHELF	AT	6			; at the bathroom
+		MESSAGE	26
+		DONE
+
+_	DOLL	PRESENT	11			; the doll
+		MESSAGE	30
+		ZERO	64			; missing button
+		NEWLINE
+		MESSAGE	31
+		DONE
+
+_	DOLL	PRESENT	11
+		MESSAGE	30
+		DONE
+
+_	NOTE	ADJECT2	DANCE			; note from dancer the reindeer
+		PRESENT	4
+		MESSAGE	17	
+		DONE
+
+_	NOTE	ADJECT2	PRANC			; note from prancer the reindeer
+		PRESENT	5
+		MESSAGE	18	
+		DONE
+
+_	NOTE	MESSAGE	44			; we need to know which note
+		DONE
+
+_	BIRD	AT	8			; santa's office
+		EQ	65	1		; bird waiting outside
+		MESSAGE	40			; something birdy
+		DONE
+
+_	BIRD	AT	8			; santa's office
+		EQ	65	2		; bird waiting inside
+		MESSAGE	41			; "bird came on a special errand!"
+
+_	BIRD	AT	8
+		EQ	65	2		; bird waiting inside
+		ZERO	67			; Dancer's quest
+		ISAT	4	252		; note does not exist
+		CREATE	4			; create it
+		CREATE	11			; create the rag doll as well
+		NEWLINE
+		MESSAGE	43			; "The bird is carrying a note and what looks like a doll."
+		DONE
+
+_	BIRD	DONE				; no "nothing of interest" message
+
+_	_	MESSAGE	28			; nothing of interest
+		DONE
+;------------------------------------------------------------------------------
+/PRO 8 ; Thread the needle
+
+_	_	CARRIED	1		; needle
+		CARRIED	2		; sewing strand
+		WORN	3		; spectacles
+		AT	9		; at the workbench room
+		MESSAGE	20		; you do it
+		DESTROY	2
+		DONE
+
+_	_	CARRIED	1		; needle
+		CARRIED	2		; sewing strand
+		AT	9		; at the workbench room
+		MESSAGE	24		; bad sight
+		DONE
+
+_	_	CARRIED	1		; needle
+		CARRIED	2		; sewing strand
+		NOTAT	9		; not at the workbench room
+		MESSAGE	23		; bad sight
+		DONE
+
+_	_	CARRIED	1		; needle
+		NOTCARR	2		; sewing strand
+		MESSAGE	25		; you're missing something
+
+_	_	NOTDONE			; can't do that
+
+;------------------------------------------------------------------------------
+/PRO 9 ; The bird
+
+; Flag 65 used as follows: 0 (bird is coming/not with Santa) 1 (bird waiting outside)
+;			   2 (bird waiting inside) 255 (bird is away)
+; Flag 66 used as follows: 0 (window is closed) 255 (window is open)
+
+_	_	EQ	65	255	; Bird away?
+		CHANCE	20		; Give our helper a bit of a rest
+		CLEAR	65		; bird is coming!
+
+_	_	ZERO	65		; is the bird coming / already with us?
+		ZERO	66		; is the window closed?
+		LET	65	1	; Bird waiting outside
+		NEWLINE
+		MESSAGE	34		; Let it be known
+
+_	_	LT	65	2	; bird coming or waiting outside?
+		NOTZERO	66		; is the window open?
+		LET	65	2	; move the bird inside
+		EQ	38	8	; is the player at Santa's office
+		NEWLINE
+		MESSAGE	36		; tell them
 
