@@ -179,6 +179,7 @@ NOTE	53	noun		; different notes
 ELEPH	54	noun		; toy elephant
 TRUMP	55	noun		; toy trumpet
 ATOMI	56	noun		; perfume atomizer
+PERFU	56	noun		; perfume atomizer
 SQUEE	57	noun		; rubber squeezer
 DUCK	58	noun		; a rubber duck
 WORKB	59	noun		; workbench
@@ -234,6 +235,8 @@ FIX	36	verb
 MEND	36	verb
 ABOUT	37	verb
 GIVE	38	verb
+HUG	39	verb
+PRESS	39	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -474,13 +477,16 @@ D."
 /18
 This note comes directly from Prancer the reindeer, and it says:
 
-Santa is probably beginning to get drunk as none of us can see what is
+
+"Santa is probably beginning to get drunk as none of us can see what is
 wrong with this elephant.
 
-Whatever it is, please have it fixed and give it back to our
+
+Whatever it is, please fix it and give it back to our
 feathered friend once you are done.
 
-P.
+
+P."
 /19
 The needle is threaded and ready to go.
 /20
@@ -561,11 +567,17 @@ That is exactly what you need to do.
 /56
 The house could use some fresh air, better leave it open.
 /57
-The bird refuses the doll, chirping while looking at you.
+The bird refuses it, chirping angrily while looking at you.
 /58
 The bird grabs the doll with its beak and flies away through the window.
 /59
 The bird drops a note and what looks like a stuffed elephant toy.
+/60
+Which note do you mean?
+/61
+The plush elephant toy is soft and easy to grasp and hug. 
+/62
+The elephant quacks when you give it a gentle squeeze.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -581,7 +593,7 @@ A note from Dancer
 /5
 A note from Prancer
 /6
-A stuffed toy elephant
+A plush elephant toy
 /7
 A toy trumpet
 /8
@@ -711,7 +723,7 @@ W 11
 /5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
 /6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ELEPH  _
 /7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    TRUMP  _
-/8      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ATOMI  _
+/8      6	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ATOMI  _
 /9      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SQUEE  _
 /10     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DUCK   _
 /11     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DOLL   _
@@ -909,6 +921,10 @@ FIX	DOLL	CARRIED	11		; the doll
 		MESSAGE	55		; that is what you need to do
 		DONE
 
+HUG	ELEPH	CARRIED	6		; the elephant
+		MESSAGE	62		; gives a quack
+		DONE
+
 GIVE	DOLL	NOUN2	BIRD		; end of mission one
 		CARRIED	11		; the doll
 		NOTZERO	64		; eye fixed
@@ -923,6 +939,19 @@ GIVE	DOLL	NOUN2	BIRD
 		CARRIED	11
 		ZERO	64		; eye not fixed
 		MESSAGE	57		; bird does not want it
+		DONE
+
+GIVE	_	NOUN2	BIRD
+		MESSAGE	57		; bird does not want it
+		DONE
+
+GET	NOTE	ADJECT2	DANCER
+		PRESENT	4
+		GET	4
+		DONE
+GET	NOTE	ADJECT2	PRANCER
+		PRESENT	5
+		GET	5
 		DONE
 
 GET     ALL     DOALL   HERE
@@ -992,6 +1021,7 @@ _       _       RESET                   ; Set objects to start location & Flag 1
                 SET     CPAdject
 		LET	53	64	; object lists printed as sentences.
 		SET	65		; Bird begins away
+		LET	67	1	; start directly on second quest
                 GOTO    2               ; Main game
 
 ;------------------------------------------------------------------------------
@@ -1132,6 +1162,10 @@ _	BIRD	AT	8			; santa's office
 		DONE
 
 _	BIRD	DONE				; no "nothing of interest" message
+
+_	ELEPH	PRESENT	6			; the elephant
+		MESSAGE	61			; soft and squeezeable
+		DONE
 
 _	_	MESSAGE	28			; nothing of interest
 		DONE
