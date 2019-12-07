@@ -167,6 +167,7 @@ ALL     20      noun
 LOT     20      noun
 EVERY   20      noun
 BIRD	21	noun
+MESSE	21	noun
 SOMEO	21	noun
 SOMET	21	noun
 ;
@@ -185,8 +186,19 @@ COTTO	60	noun		; So we can thread the needle with a thread
 STRAN	61	noun		; So we can thread the needle with a thread
 MIRRO	62	noun		; the mirror
 SHELF	63	noun		; the shelf
+SHELV	63	noun		; shelves of cupboards
 DOLL	64	noun		; the rag doll
 WINDO	65	noun		; santa's window
+WASHB	66	noun		; the washbasin
+SINK	66	noun		; the washbasin
+TUB	67	noun		; the clawfoot tub
+CLAWF	67	noun		; the clawfoot tub
+RUG	68	noun		; the rug
+KITCH	69	noun		; the kitchen
+ROLLS	70	noun		; cinnamon roll
+WALL	71	noun		; could be useful
+CUPBO	72	noun		; shelves of cupboards
+EYE	73	noun		; so we can write fix eye
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -218,6 +230,10 @@ SEW	32	verb
 OPEN	33	verb
 CLOSE	34	verb
 WAIT	35	verb
+FIX	36	verb
+MEND	36	verb
+ABOUT	37	verb
+GIVE	38	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -242,6 +258,7 @@ GENTL   6       adverb
 TO      2       preposition
 FROM    3       preposition
 IN      4       preposition
+INSID   4       preposition
 OUT     5       preposition
 THROU   6       preposition
 OVER    7       preposition
@@ -488,7 +505,7 @@ You see nothing special.
 /29
 Your reflection looks at you straight in the eye.
 /30
-A sweet and soft rag doll, made from scraps of fabrics. 
+A sweet and soft rag doll, made from scraps of fabrics.
 /31
 The doll is missing one eye.
 /32
@@ -496,11 +513,11 @@ The room's large window is slightly open.
 /33
 The room's large window is closed.
 /34
-You hear someone or something tapping at one of the windows.
+You hear someone or something tapping at some window in the house.
 /35
 One of Santa's little bird messengers is waiting outside.
 /36
-A little bird enters through the opening and lands on the desk.
+Santa's little messenger enters through the opening and lands on the desk.
 /37
 You open the window just a little, and you get a nice breeze from the outside.
 /38
@@ -514,9 +531,41 @@ The little bird has come on a special errand from Santa!
 /42
 A little bird is sitting on the table.
 /43
-The bird is carrying a note and what looks like a doll.
+The bird drops a note and what looks like a doll.
 /44
 Which note do you mean?
+/45
+Santa uses the cupboards as a convenient storage for lots of things. One of them
+has a label that reads "emergency spare kit".
+/46
+You pull the cupboard open, not without some effort.
+/47
+The cupboard got stuck and it won't close.
+/48
+You can't see anything useful in that mess right now.
+/49
+You spot something black and round that could be useful.
+/50
+One of the cupboards is open.
+/51
+You place the button where the missing eye is supposed to be,
+but it falls off.
+/52
+You don't have everything you need.
+/53
+You sew the button where the missing eye is supposed to be.
+/54
+The doll has two beautiful matching dark eyes.
+/55
+That is exactly what you need to do.
+/56
+The house could use some fresh air, better leave it open.
+/57
+The bird refuses the doll, chirping while looking at you.
+/58
+The bird grabs the doll with its beak and flies away through the window.
+/59
+The bird drops a note and what looks like a stuffed elephant toy.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -546,10 +595,10 @@ A rag doll
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
-       Merry Night Shift
+          Merry Night Shift
 
 
-    - A Christmas adventure -
+       - A Christmas Adventure -
 
 
 
@@ -790,6 +839,11 @@ _	_	AT	8		; At Santa's office
 		NEWLINE
 		MESSAGE	42		; say it
 
+_	_	AT	11		; spare room
+		NOTZERO	68		; cupboard open
+		NEWLINE
+		MESSAGE	50
+
 ;------------------------------------------------------------------------------
 /PRO 4 ; Old process 2
 
@@ -810,6 +864,8 @@ EXAMI	_	PROCESS 7
 
 THREA	NEEDL	PROCESS	8
 
+SEW	BUTTON	PROCESS	10		; all things sewing
+
 OPEN	WINDO	AT	8		; at santa's office
 		ZERO	66		; window is closed
 		SET	66		; open it
@@ -819,6 +875,54 @@ OPEN	WINDO	AT	8		; at santa's office
 OPEN	WINDOW	AT	8		; at santa's office
 		NOTZERO	66		; is it open?
 		MESSAGE	38		; already open
+		DONE
+
+OPEN	CUPBO	AT	11		; spare room
+		ZERO	68		; closed?
+		SET	68		; open it
+		MESSAGE	46		; you open it
+		DONE
+
+OPEN	CUPBO	AT	11		; spare room
+		NOTZERO	68		; open?
+		MESSAGE	38		; already open
+		DONE
+
+CLOSE	CUPBO	AT	11		; spare room
+		NOTZERO	68		; open?
+		MESSAGE	47		; it won't close
+		DONE
+
+CLOSE	WINDO	AT	8		; santa's office
+		NOTZERO	66		; window open?
+		MESSAGE	56		; better leave it open
+		DONE
+FIX	EYE	LET	34	64	; 64 -> doll	
+FIX	DOLL	CARRIED	0		; the button
+		CARRIED	11		; the doll
+		MESSAGE	51		; the button falls
+		LET	51	0	; the button drops
+		PUTO	[38]		; puto uses the object in flag #51
+		DONE
+
+FIX	DOLL	CARRIED	11		; the doll
+		MESSAGE	55		; that is what you need to do
+		DONE
+
+GIVE	DOLL	NOUN2	BIRD		; end of mission one
+		CARRIED	11		; the doll
+		NOTZERO	64		; eye fixed
+		DESTROY	11		; the bird has it now
+		SET	65		; bird is away
+		SET	67		; We move on to Prancer's quest
+		CLEAR	Turns		; 10 turns break
+		MESSAGE	58		; bird flies off thought the window
+		DONE
+
+GIVE	DOLL	NOUN2	BIRD
+		CARRIED	11
+		ZERO	64		; eye not fixed
+		MESSAGE	57		; bird does not want it
 		DONE
 
 GET     ALL     DOALL   HERE
@@ -940,19 +1044,53 @@ _	SHELF	AT	6			; at the bathroom
 		MESSAGE	26
 		DONE
 
-_	DOLL	PRESENT	11			; the doll
-		MESSAGE	30
-		ZERO	64			; missing button
-		NEWLINE
-		MESSAGE	31
+_	CUPBO	PREP	IN			; inside the cupboard
+		AT	11			; spare parts room
+		NOTZERO	68			; opened?
+		ZERO	69			; Note from Dancer not read yet?
+		MESSAGE	48			; not right now
 		DONE
 
-_	DOLL	PRESENT	11
-		MESSAGE	30
+_	CUPBO	PREP	IN			; inside the cupboard
+		AT	11			; spare parts room
+		NOTZERO	68			; opened?
+		NOTZERO	69			; Note from Dancer read?
+		ISAT	0	252		; button not created yet
+		CREATE	0			; create the button/eye
+		MESSAGE	49			; you see something round and black
+		DONE
+
+_	CUPBO	PREP	IN			; inside the cupboard
+		AT	11			; spare parts room
+		ISNOTAT	0	252		; the button has been created
+		MESSAGE	48			; back to the messy cupboard
+		DONE
+
+_	CUPBO	AT	11			; spare parts room
+		MESSAGE	45			; emergency spare kit cupboard
+		DONE
+
+_	WALL	AT	11			; spare parts room
+		DESC	11
+		NEWLINE
+		DONE
+
+_	DOLL	PRESENT	11			; the doll
+		ZERO	64			; missing button
+		MES	30			; doll made from scraps of fabrics
+		SPACE
+		MESSAGE	31			; missing eye
+		DONE
+
+_	DOLL	PRESENT	11			; the doll
+		MES	30			; doll made from scraps of fabrics
+		SPACE
+		MESSAGE	54			; doll has two eyes
 		DONE
 
 _	NOTE	ADJECT2	DANCE			; note from dancer the reindeer
 		PRESENT	4
+		SET	69			; mark the note as read, so the button appears
 		MESSAGE	17	
 		DONE
 
@@ -973,14 +1111,24 @@ _	BIRD	AT	8			; santa's office
 		EQ	65	2		; bird waiting inside
 		MESSAGE	41			; "bird came on a special errand!"
 
-_	BIRD	AT	8
+_	BIRD	AT	8			; santa's office
 		EQ	65	2		; bird waiting inside
 		ZERO	67			; Dancer's quest
 		ISAT	4	252		; note does not exist
 		CREATE	4			; create it
 		CREATE	11			; create the rag doll as well
 		NEWLINE
-		MESSAGE	43			; "The bird is carrying a note and what looks like a doll."
+		MESSAGE	43			; bird carrying note and doll
+		DONE
+
+_	BIRD	AT	8			; santa's office
+		EQ	65	2		; bird waiting inside
+		NOTZERO	67			; Prancer's quest
+		ISAT	5	252		; note does not exist
+		CREATE	5			; create it
+		CREATE	6			; create the toy elephant
+		NEWLINE
+		MESSAGE	59			; bird carrying note and stuffed elephant
 		DONE
 
 _	BIRD	DONE				; no "nothing of interest" message
@@ -1030,7 +1178,12 @@ _	_	EQ	65	255	; Bird away?
 _	_	ZERO	65		; is the bird coming / already with us?
 		ZERO	66		; is the window closed?
 		LET	65	1	; Bird waiting outside
+
+_	_	EQ	65	1	; bird waiting outside?
+		NOTAT	8		; we can see in the description, no need to repeat
+		GT	Turns	10	; some quiet initial exploring
 		NEWLINE
+		CHANCE	60		; message appears oftenish
 		MESSAGE	34		; Let it be known
 
 _	_	LT	65	2	; bird coming or waiting outside?
@@ -1040,3 +1193,28 @@ _	_	LT	65	2	; bird coming or waiting outside?
 		NEWLINE
 		MESSAGE	36		; tell them
 
+;------------------------------------------------------------------------------
+/PRO 10 ; sewing time
+
+_	_	NOTAT	9		; at the workshop?
+		MESSAGE	23		; eyes need better lightning
+		DONE
+
+_	_	AT	9		; at the workshop
+		NOTWORN	3		; not wearing the spectacles?
+		MESSAGE	24		; poor sight
+		DONE
+
+_	_	AT	9		; at the workshop
+		CARRIED	0		; button
+		CARRIED	1		; needle
+		CARRIED	11		; rag doll
+		WORN	3		; wearing the spectacles?
+		ISAT	2	252	; thread does not exist thefore needle is threaded
+		MESSAGE	53		; You don't have everything you need.
+		DESTROY	0		; no more button
+		SET	64		; eye fixed
+		DONE
+		
+_	_	MESSAGE	52		; You don't have everything you need.
+		DONE
