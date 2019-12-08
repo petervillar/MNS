@@ -990,6 +990,13 @@ GIVE	DOLL	NOUN2	BIRD
 		MESSAGE	57		; bird does not want it
 		DONE
 
+GIVE	FLASK	NOUN2	BIRD		; secret mission
+		CARRIED	12		; cognac
+		SET	65		; send bird away
+		CLEAR	Turns		; 10 turns break
+		MESSAGE	58		; bird flies off thought the window
+		DONE
+
 GIVE	_	NOUN2	BIRD
 		MESSAGE	57		; bird does not want it
 		DONE
