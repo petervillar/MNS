@@ -200,6 +200,13 @@ ROLLS	70	noun		; cinnamon roll
 WALL	71	noun		; could be useful
 CUPBO	72	noun		; shelves of cupboards
 EYE	73	noun		; so we can write fix eye
+FLASK	74	noun		; flask of cognac
+COGNA	74	noun		; flask of cognac
+CUTTE	75	noun		; box cutter
+KNIFE	75	noun		; box cutter
+CRATE	76	noun		; wooden crates and boxes
+CARDB	76	noun		; wooden crates and boxes
+BOX	76	noun		; wooden crates and boxes
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -237,6 +244,8 @@ ABOUT	37	verb
 GIVE	38	verb
 HUG	39	verb
 PRESS	39	verb
+DRINK	40	verb
+CUT	41	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -430,6 +439,9 @@ Tape or Disc?
 ;------------------------------------------------------------------------------
 /MTX    ;Message Texts
 /0
+Merry Night Watch by Peter Villar, December 2019
+
+DAAD compiler 2.42 by Infinite Imaginations and Aventuras AD
 /1
 *** The End, Merry Christmas ***
 /2
@@ -578,6 +590,23 @@ Which note do you mean?
 The plush elephant toy is soft and easy to grasp and hug. 
 /62
 The elephant quacks when you give it a gentle squeeze.
+/63
+Santa's favourite cognac.
+/64
+You take a sip, why not?
+
+
+The taste of the cognac felt beautiful in the mouth.
+/65
+You better not abuse it.
+/66
+It has been really handy for opening up sealed boxes during the last unpacking job.
+/67
+Skillfully you cut open the toy, exposing its hollow interior.
+/68
+A rubber duck pops out of it, falling to the ground.
+/69
+You still feel happy after you squeeze it, but only a dull sound comes from it.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -601,9 +630,13 @@ A perfume atomizer
 /9
 A rubber squeezer
 /10
-A rubber duck 
+A rubber duck
 /11
 A rag doll
+/12
+A flask of cognac
+/13
+A box cutter
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
@@ -670,8 +703,8 @@ The stairs take you back up to the corridor.
 Shelves of cupboards, most of them unopened for years, line every wall of this
 windowless room.
 /12
-The store room contains old, unfinished toys. There is firewood stacked and prepared
-in a pile of wooden logs.
+Piles of cardboard boxes, wooden crates and packing material are spread around
+the room.
 ;------------------------------------------------------------------------------
 /CON    ;Connections
 /0
@@ -727,6 +760,8 @@ W 11
 /9      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SQUEE  _
 /10     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DUCK   _
 /11     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DOLL   _
+/12     7	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    FLASK  _
+/13     12	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    CUTTE  _
 ;------------------------------------------------------------------------------
 /PRO 0       ;Main Location Loop
 
@@ -922,7 +957,21 @@ FIX	DOLL	CARRIED	11		; the doll
 		DONE
 
 HUG	ELEPH	CARRIED	6		; the elephant
+		ISAT	10	252	; duck still inside
 		MESSAGE	62		; gives a quack
+		DONE
+
+HUG	ELEPH	CARRIED	6		; the elephant
+		MESSAGE	69		; dull sound
+		DONE
+
+CUT	ELEPH	CARRIED	13		; box cutter
+		CARRIED	6		; elephant
+		ZERO	71		; not cut
+		MESSAGE	67
+		CREATE	10		; rubber duck
+		NEWLINE
+		MESSAGE	68		; inform player
 		DONE
 
 GIVE	DOLL	NOUN2	BIRD		; end of mission one
@@ -971,6 +1020,19 @@ WEAR    _       AUTOW
                 DONE
 
 R       _       RESTART
+
+ABOUT	_	MESSAGE	0
+		DONE
+
+DRINK	COGNAC	PRESENT	12
+		ZERO	70		; not yet tasted
+		SET	70		; just this once
+		MESSAGE	64
+		DONE
+
+DRINK	COGNAC	PRESENT	12
+		MESSAGE	65		; enough
+		DONE
 
 QUIT    _       QUIT
                 END
@@ -1026,6 +1088,10 @@ _       _       RESET                   ; Set objects to start location & Flag 1
 
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
+
+_	FLASK	PRESENT	12
+		MESSAGE	63
+		DONE
 
 _	BUTTO	PRESENT	0
 		MESSAGE	13
@@ -1165,6 +1231,10 @@ _	BIRD	DONE				; no "nothing of interest" message
 
 _	ELEPH	PRESENT	6			; the elephant
 		MESSAGE	61			; soft and squeezeable
+		DONE
+
+_	CUTTE	PRESENT	13			; is the box cutter there?
+		MESSAGE	66			; very convenient
 		DONE
 
 _	_	MESSAGE	28			; nothing of interest
