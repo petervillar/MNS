@@ -177,10 +177,11 @@ SPECT	52	noun		; A pair of spectacles
 GLASS	52	noun		; A pair of spectacles
 NOTE	53	noun		; different notes
 ELEPH	54	noun		; toy elephant
-TRUMP	55	noun		; toy trumpet
-ATOMI	56	noun		; perfume atomizer
+TRUMP	55	noun		; toy bugle
+BUGLE	55	noun		; toy bugle
 PERFU	56	noun		; perfume atomizer
-SQUEE	57	noun		; rubber squeezer
+BOTTLE	56	noun		; perfume atomizer
+BULB	57	noun		; rubber bulb
 DUCK	58	noun		; a rubber duck
 WORKB	59	noun		; workbench
 COTTO	60	noun		; So we can thread the needle with a thread
@@ -200,13 +201,14 @@ ROLLS	70	noun		; cinnamon roll
 WALL	71	noun		; could be useful
 CUPBO	72	noun		; shelves of cupboards
 EYE	73	noun		; so we can write fix eye
-FLASK	74	noun		; flask of cognac
-COGNA	74	noun		; flask of cognac
+FLASK	74	noun		; bottle of cognac
+COGNA	74	noun		; bottle of cognac
 CUTTE	75	noun		; box cutter
 KNIFE	75	noun		; box cutter
 CRATE	76	noun		; wooden crates and boxes
 CARDB	76	noun		; wooden crates and boxes
 BOX	76	noun		; wooden crates and boxes
+BOXES	76	noun		; wooden crates and boxes
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -242,10 +244,18 @@ FIX	36	verb
 MEND	36	verb
 ABOUT	37	verb
 GIVE	38	verb
-HUG	39	verb
 PRESS	39	verb
 DRINK	40	verb
 CUT	41	verb
+RIP	41	verb
+SQUEE	42	verb
+HUG	42	verb
+DISAS	43	verb
+DETAC	43	verb
+PLAY	44	verb
+BLOW	44	verb
+ATTAC	45	verb
+ASSEM	45	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -280,6 +290,7 @@ ON      10      preposition
 OFF     11      preposition
 AT      12      preposition
 EXCEP   13      preposition
+APART	14	preposition
 ;                               Pronouns
 IT      2       pronoun
 THEM    2       pronoun
@@ -465,7 +476,7 @@ In the Basement
 /11
 Spare Parts Room
 /12
-Store Room
+Storage Room
 /13
 It is a black, mushroom domed button.
 /14
@@ -607,6 +618,43 @@ Skillfully you cut open the toy, exposing its hollow interior.
 A rubber duck pops out of it, falling to the ground.
 /69
 You still feel happy after you squeeze it, but only a dull sound comes from it.
+/70
+Nobody wants that.
+/71
+quack! quack! quack!
+/72
+The water in the tub is clean and still warm.
+/73
+You put the rubber duck in the water.
+/74
+The rubber duck swims happily around in the tub.
+/75
+Yellow and cute.
+/76
+.. why would you do that?
+/77
+The bottle is almost empty.
+/78
+It has a bulb attached, so when you squeeze it it sprays perfume.
+/79
+You take the bulb apart.
+/80
+The rubber bulb is dried and cracked due to age, but it works.
+/81
+When you squeeze it, 
+/82
+the bottle sprays perfume.
+/83
+air comes out of it.
+/84
+The wooden crates have been used for storing bottles in the past, but now
+they are only used for old discarded toys.
+/85
+You notice a tiny plastic bugle in reasonably good condition.
+/86
+The bugle is amazingly small.
+/87
+The bugle produces a sharp, high-pitched sound.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -624,17 +672,17 @@ A note from Prancer
 /6
 A plush elephant toy
 /7
-A toy trumpet
+A toy bugle
 /8
-A perfume atomizer
+A perfume bottle
 /9
-A rubber squeezer
+A rubber bulb
 /10
 A rubber duck
 /11
 A rag doll
 /12
-A flask of cognac
+A bottle of cognac
 /13
 A box cutter
 ;------------------------------------------------------------------------------
@@ -659,7 +707,7 @@ No shift can possibly be more exciting and rewarding than this one!
 
 
 /1
-; Inside the cupboard
+; Inside the tub
 /2
 This is the entrance to Santa Claus workshop and home. A dimly lit corridor
 leads east to the inside of the house.
@@ -755,9 +803,9 @@ W 11
 /4      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   DANCE
 /5      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   PRANC
 /6      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ELEPH  _
-/7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    TRUMP  _
-/8      6	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    ATOMI  _
-/9      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    SQUEE  _
+/7      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BUGLE  _
+/8      6	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    PERFU  _
+/9      252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    BULB   _
 /10     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DUCK   _
 /11     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DOLL   _
 /12     7	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    FLASK  _
@@ -944,7 +992,7 @@ CLOSE	WINDO	AT	8		; santa's office
 		NOTZERO	66		; window open?
 		MESSAGE	56		; better leave it open
 		DONE
-FIX	EYE	LET	34	64	; 64 -> doll	
+FIX	EYE	LET	34	64	; 64 -> doll but it doesn't seem to work
 FIX	DOLL	CARRIED	0		; the button
 		CARRIED	11		; the doll
 		MESSAGE	51		; the button falls
@@ -956,14 +1004,53 @@ FIX	DOLL	CARRIED	11		; the doll
 		MESSAGE	55		; that is what you need to do
 		DONE
 
-HUG	ELEPH	CARRIED	6		; the elephant
+SQUEE	BULB	CARRIED	8		; the perfume bottle
+		ISAT	9	252	; bulb attached
+		MES	81		; when you squeeze it ...
+		MESSAGE	82		; it sprays perfume
+		DONE
+
+SQUEE	BULB	CARRIED	9		; bulb taken apart
+		MES	81		; when you squeeze it ...
+		MESSAGE	83		; it sprays air
+		DONE
+
+SQUEE	_	NOUN2	ELEPH
+		CARRIED	6		; the elephant
 		ISAT	10	252	; duck still inside
 		MESSAGE	62		; gives a quack
 		DONE
 
-HUG	ELEPH	CARRIED	6		; the elephant
+SQUEE	_	NOUN2	ELEPH
+		CARRIED	6		; the elephant
 		MESSAGE	69		; dull sound
 		DONE
+
+SQUEE	_	NOUN2	DUCK
+		CARRIED	10		; a rubber duck
+		MESSAGE	71		; quack
+		DONE
+
+DISAS	BULB	LET	34	56	; 56 -> bottle
+DISAS	BOTTLE	CARRIED	8		; the perfume bottle
+		ISAT	9	252	; bulb attached
+		MESSAGE	79		; You take the bulb apart
+		CREATE	9		; create bulb
+		GET	9		; take it
+		DONE
+
+TAKE	BULB	PREP	APART		; so that "take bulb apart" works
+		CARRIED	8		; the perfume bottle
+		ISAT	9	252	; bulb attached
+		MESSAGE	79		; You take the bulb apart
+		CREATE	9		; create bulb
+		NEWLINE
+		GET	9		; take it
+		DONE
+
+PLAY	BUGLE	CARRIED	7		; the bugle
+		MESSAGE	87		; sharp high-pitched sound
+		DONE	
 
 CUT	ELEPH	CARRIED	13		; box cutter
 		CARRIED	6		; elephant
@@ -975,6 +1062,7 @@ CUT	ELEPH	CARRIED	13		; box cutter
 		DONE
 
 GIVE	DOLL	NOUN2	BIRD		; end of mission one
+		AT	8		; santa's office	
 		CARRIED	11		; the doll
 		NOTZERO	64		; eye fixed
 		DESTROY	11		; the bird has it now
@@ -985,20 +1073,29 @@ GIVE	DOLL	NOUN2	BIRD		; end of mission one
 		DONE
 
 GIVE	DOLL	NOUN2	BIRD
+		AT	8		; santa's office	
 		CARRIED	11
 		ZERO	64		; eye not fixed
 		MESSAGE	57		; bird does not want it
 		DONE
 
 GIVE	FLASK	NOUN2	BIRD		; secret mission
+		AT	8		; santa's office	
+		EQ	65	2	; bird waiting inside
 		CARRIED	12		; cognac
 		SET	65		; send bird away
 		CLEAR	Turns		; 10 turns break
+		DESTROY	12		; no more cognac
 		MESSAGE	58		; bird flies off thought the window
 		DONE
 
 GIVE	_	NOUN2	BIRD
+		AT	8		; santa's office	
+		EQ	65	2	; bird waiting inside
 		MESSAGE	57		; bird does not want it
+		DONE
+
+GIVE	_	MESSAGE	70		; Nobody wants that
 		DONE
 
 GET	NOTE	ADJECT2	DANCER
@@ -1010,9 +1107,21 @@ GET	NOTE	ADJECT2	PRANCER
 		GET	5
 		DONE
 
+GET	DUCK	AT	6		; bathroom
+		ISAT	10	1	; in bath tube
+		MES	74		; duck swimming happily
+		MESSAGE	76		; why do it?
+		DONE
+
 GET     ALL     DOALL   HERE
 GET     _       AUTOG
                 DONE
+
+PUT	DUCK	PREP	IN
+		NOUN2	TUB
+		MESSAGE	73
+		PLACE	10	1	; move duck to invisible room
+		DONE
 
 DROP    ALL     DOALL   CARRIED
 DROP    _       AUTOD
@@ -1064,6 +1173,7 @@ LOOK    _       RESTART
 
 _	_	WINDOW	2
 _	_	WINAT	0	0
+		PAPER	2
 		WINSIZE	1	127
 		CLS
 
@@ -1096,8 +1206,63 @@ _       _       RESET                   ; Set objects to start location & Flag 1
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
 
-_	FLASK	PRESENT	12
-		MESSAGE	63
+_	BUGLE	PRESENT	7		; the bugle
+		MESSAGE	86		; small
+		DONE
+
+_	CRATE	AT	12		; storage room
+		ISAT	7	252	; bugle does not exist
+		MESSAGE	84		; crate description
+		NEWLINE
+		MESSAGE	85		; notice a toy in good condition
+		CREATE	7		; toy bugle
+		DONE
+
+_	CRATE	AT	12		; storage room
+		MESSAGE	84		; crate description
+		DONE
+
+_	BULB	PRESENT	9		; the bulb
+		MESSAGE	80		; dried and cracked
+		DONE
+
+_	BULB	CARRIED	8		; if it's in the perfume bottle
+		ISAT	9	252	; 
+		MESSAGE	80		; dried and cracked
+		DONE
+
+_	PERFU	PRESENT	8		; bottle of perfume
+		ISAT	9	252	; with rubber bulb on place
+		MES 77			; bottle of perfume almost empty	
+		SPACE
+		MESSAGE	78
+		DONE
+
+_	PERFU	PRESENT	8		; bottle of perfume
+		MESSAGE	77		; bottle of perfume almost empty
+		DONE
+
+_	DUCK	PRESENT	10		; duck
+		MESSAGE	75		; yellow and cute
+		DONE
+
+_	DUCK	ISAT	10	1	; rubber duck in tub?
+		AT	6		; bathroom
+		MESSAGE	75
+		DONE
+
+_	TUB	AT	6		; bathroom
+		MESSAGE	72		; water clean
+		ISAT	10	1	; rubber duck in tub?
+		MESSAGE	74		; rubber duck swims
+		DONE
+
+_	TUB	AT	6		; bathroom
+		MESSAGE	72		; water clean
+		DONE
+
+_	FLASK	PRESENT	12		; flask of cognac
+		MESSAGE	63		; Santa's favourite cognac.
 		DONE
 
 _	BUTTO	PRESENT	0
