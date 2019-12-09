@@ -256,6 +256,7 @@ PLAY	44	verb
 BLOW	44	verb
 ATTAC	45	verb
 ASSEM	45	verb
+USE	45	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -655,6 +656,10 @@ You notice a tiny plastic bugle in reasonably good condition.
 The bugle is amazingly small.
 /87
 The bugle produces a sharp, high-pitched sound.
+/88
+You attach the bulb to the bugle.
+/89
+There is a rubber bulb attached to its end.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -1005,9 +1010,14 @@ FIX	DOLL	CARRIED	11		; the doll
 		DONE
 
 SQUEE	BULB	CARRIED	8		; the perfume bottle
-		ISAT	9	252	; bulb attached
+		ISAT	9	252	; bulb attached to bottle
 		MES	81		; when you squeeze it ...
 		MESSAGE	82		; it sprays perfume
+		DONE
+
+SQUEE	BULB	CARRIED	7		; the bugle
+		ISAT	9	1	; bulb attached to bugle
+		MESSAGE	87		; high-pitched sound
 		DONE
 
 SQUEE	BULB	CARRIED	9		; bulb taken apart
@@ -1039,6 +1049,13 @@ DISAS	BOTTLE	CARRIED	8		; the perfume bottle
 		GET	9		; take it
 		DONE
 
+ATTAC	BULB	NOUN2	BUGLE
+		CARRIED	7		; bugle
+		CARRIED	9		; bulb
+		MESSAGE	88		; you do it
+		PLACE	9	1	; no more bulb
+		DONE
+
 TAKE	BULB	PREP	APART		; so that "take bulb apart" works
 		CARRIED	8		; the perfume bottle
 		ISAT	9	252	; bulb attached
@@ -1049,6 +1066,7 @@ TAKE	BULB	PREP	APART		; so that "take bulb apart" works
 		DONE
 
 PLAY	BUGLE	CARRIED	7		; the bugle
+		ISNOTAT	9	1	; not with the rubber bulb attached
 		MESSAGE	87		; sharp high-pitched sound
 		DONE	
 
@@ -1205,6 +1223,13 @@ _       _       RESET                   ; Set objects to start location & Flag 1
 
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
+
+_	BUGLE	PRESENT	7		; the bugle
+		ISAT	9	1	; rubber bulb in limbo room
+		MES	86		; small
+		SPACE
+		MESSAGE	89		; bulb attached
+		DONE
 
 _	BUGLE	PRESENT	7		; the bugle
 		MESSAGE	86		; small
