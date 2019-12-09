@@ -181,8 +181,8 @@ TRUMP	55	noun		; toy bugle
 BUGLE	55	noun		; toy bugle
 PERFU	56	noun		; perfume atomizer
 BOTTLE	56	noun		; perfume atomizer
-BULB	57	noun		; rubber bulb
-DUCK	58	noun		; a rubber duck
+DUCK	57	noun		; a rubber duck
+BULB	58	noun		; rubber bulb
 WORKB	59	noun		; workbench
 COTTO	60	noun		; So we can thread the needle with a thread
 STRAN	61	noun		; So we can thread the needle with a thread
@@ -195,6 +195,7 @@ WASHB	66	noun		; the washbasin
 SINK	66	noun		; the washbasin
 TUB	67	noun		; the clawfoot tub
 CLAWF	67	noun		; the clawfoot tub
+BATHT	67	noun		; the clawfoot tub
 RUG	68	noun		; the rug
 KITCH	69	noun		; the kitchen
 ROLLS	70	noun		; cinnamon roll
@@ -216,6 +217,7 @@ GET     20      verb
 TAKE    20      verb
 DROP    21      verb
 PUT     21      verb
+PLACE   21      verb
 REMOV   22      verb
 WEAR    23      verb
 R       24      verb
@@ -250,13 +252,17 @@ CUT	41	verb
 RIP	41	verb
 SQUEE	42	verb
 HUG	42	verb
-DISAS	43	verb
 DETAC	43	verb
+LOOSE	43	verb
+SEPAR	43	verb
+DISJO	43	verb
 PLAY	44	verb
 BLOW	44	verb
 ATTAC	45	verb
 ASSEM	45	verb
+STICK	45	verb
 USE	45	verb
+XYZZY	100	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -628,7 +634,7 @@ The water in the tub is clean and still warm.
 /73
 You put the rubber duck in the water.
 /74
-The rubber duck swims happily around in the tub.
+The rubber duck is swimming happily around in the tub.
 /75
 Yellow and cute.
 /76
@@ -660,6 +666,14 @@ The bugle produces a sharp, high-pitched sound.
 You attach the bulb to the bugle.
 /89
 There is a rubber bulb attached to its end.
+/90
+The toy elephant is ripped open,
+/91
+revealing a hollow space inside.
+/92
+revealing a tiny bugle with a bulb inside.
+/93
+You put the bugle inside the body of the toy elephant.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -1025,35 +1039,25 @@ SQUEE	BULB	CARRIED	9		; bulb taken apart
 		MESSAGE	83		; it sprays air
 		DONE
 
-SQUEE	_	NOUN2	ELEPH
-		CARRIED	6		; the elephant
+SQUEE	ELEPH	CARRIED	6		; the elephant
 		ISAT	10	252	; duck still inside
 		MESSAGE	62		; gives a quack
 		DONE
 
-SQUEE	_	NOUN2	ELEPH
-		CARRIED	6		; the elephant
+SQUEE	ELEPH	CARRIED	6		; the elephant
 		MESSAGE	69		; dull sound
 		DONE
 
-SQUEE	_	NOUN2	DUCK
-		CARRIED	10		; a rubber duck
+SQUEE	DUCK	CARRIED	10		; a rubber duck
 		MESSAGE	71		; quack
 		DONE
 
-DISAS	BULB	LET	34	56	; 56 -> bottle
-DISAS	BOTTLE	CARRIED	8		; the perfume bottle
+DETAC	BULB	LET	34	56	; 56 -> bottle
+DETAC	BOTTLE	CARRIED	8		; the perfume bottle
 		ISAT	9	252	; bulb attached
 		MESSAGE	79		; You take the bulb apart
 		CREATE	9		; create bulb
 		GET	9		; take it
-		DONE
-
-ATTAC	BULB	NOUN2	BUGLE
-		CARRIED	7		; bugle
-		CARRIED	9		; bulb
-		MESSAGE	88		; you do it
-		PLACE	9	1	; no more bulb
 		DONE
 
 TAKE	BULB	PREP	APART		; so that "take bulb apart" works
@@ -1063,6 +1067,13 @@ TAKE	BULB	PREP	APART		; so that "take bulb apart" works
 		CREATE	9		; create bulb
 		NEWLINE
 		GET	9		; take it
+		DONE
+
+ATTAC	BULB	NOUN2	BUGLE
+		CARRIED	7		; bugle
+		CARRIED	9		; bulb
+		MESSAGE	88		; you do it
+		PLACE	9	1	; no more bulb
 		DONE
 
 PLAY	BUGLE	CARRIED	7		; the bugle
@@ -1135,10 +1146,14 @@ GET     ALL     DOALL   HERE
 GET     _       AUTOG
                 DONE
 
-PUT	DUCK	PREP	IN
-		NOUN2	TUB
+PUT	DUCK	NOUN2	TUB
 		MESSAGE	73
-		PLACE	10	1	; move duck to invisible room
+		PLACE	10	1	; move duck to limbo room
+		DONE
+
+PUT	BUGLE	NOUN2	ELEPH
+		MESSAGE	93		; You put the bugle inside the body of the toy elephant.
+		PLACE	7	1	; move bugle to limbo room
 		DONE
 
 DROP    ALL     DOALL   CARRIED
@@ -1166,6 +1181,9 @@ DRINK	COGNAC	PRESENT	12
 
 DRINK	COGNAC	PRESENT	12
 		MESSAGE	65		; enough
+		DONE
+
+XYZZY	_	LISTAT	1
 		DONE
 
 QUIT    _       QUIT
@@ -1425,6 +1443,20 @@ _	BIRD	AT	8			; santa's office
 		DONE
 
 _	BIRD	DONE				; no "nothing of interest" message
+
+_	ELEPH	PRESENT	6			; the elephant
+		ISAT	7	1		; bugle in limbo room
+		MES	90			; ripped open
+		SPACE
+		MESSAGE	92			; tiny bugle with a bulb inside
+		DONE
+
+_	ELEPH	PRESENT	6			; the elephant
+		ISNOTAT	10	252		; duck not created, therefore ripped open
+		MES	90			; ripped open
+		SPACE
+		MESSAGE	91			; hollow space inside
+		DONE
 
 _	ELEPH	PRESENT	6			; the elephant
 		MESSAGE	61			; soft and squeezeable
