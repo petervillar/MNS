@@ -217,6 +217,7 @@ GET     20      verb
 TAKE    20      verb
 DROP    21      verb
 PUT     21      verb
+INSERT  21      verb
 PLACE   21      verb
 REMOV   22      verb
 WEAR    23      verb
@@ -674,6 +675,10 @@ revealing a hollow space inside.
 revealing a tiny bugle with a bulb inside.
 /93
 You put the bugle inside the body of the toy elephant.
+/94
+The elephant makes a happy trumpet noise.
+/95
+You sew the elephant back up nice and tightly.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -978,7 +983,7 @@ EXAMI	_	PROCESS 7
 
 THREA	NEEDL	PROCESS	8
 
-SEW	BUTTON	PROCESS	10		; all things sewing
+SEW	_	PROCESS	10		; all things sewing
 
 OPEN	WINDO	AT	8		; at santa's office
 		ZERO	66		; window is closed
@@ -1042,6 +1047,11 @@ SQUEE	BULB	CARRIED	9		; bulb taken apart
 SQUEE	ELEPH	CARRIED	6		; the elephant
 		ISAT	10	252	; duck still inside
 		MESSAGE	62		; gives a quack
+		DONE
+
+SQUEE	ELEPH	CARRIED	6		; the elephant
+		ISAT	7	1	; bugle in limbo room (inside elephant)
+		MESSAGE	94		; gives a trumpet noise
 		DONE
 
 SQUEE	ELEPH	CARRIED	6		; the elephant
@@ -1533,21 +1543,29 @@ _	_	NOTAT	9		; at the workshop?
 		MESSAGE	23		; eyes need better lightning
 		DONE
 
-_	_	AT	9		; at the workshop
-		NOTWORN	3		; not wearing the spectacles?
+_	_	NOTWORN	3		; not wearing the spectacles?
 		MESSAGE	24		; poor sight
 		DONE
 
-_	_	AT	9		; at the workshop
+_	BUTTON	AT	9		; at the workshop
 		CARRIED	0		; button
 		CARRIED	1		; needle
 		CARRIED	11		; rag doll
-		WORN	3		; wearing the spectacles?
+;		WORN	3		; wearing the spectacles?
 		ISAT	2	252	; thread does not exist thefore needle is threaded
-		MESSAGE	53		; You don't have everything you need.
+		MESSAGE	53		; You sew the button
 		DESTROY	0		; no more button
 		SET	64		; eye fixed
 		DONE
+
+_	ELEPH	AT	9		; at the workshop
+		CARRIED	6		; elephant
+		CARRIED	1		; needle
+		NOTZERO	71		; elephant is open
+		ZERO	72		; not sewn up back 
+		PLACE	7	1	; trumpet to limbo room
+		MESSAGE	95		; you sew the elephant back up
+		DONE	
 		
 _	_	MESSAGE	52		; You don't have everything you need.
 		DONE
