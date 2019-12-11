@@ -3,6 +3,10 @@
 ; MNS.SCE source code for DAAD V2
 ; Peter Villar - December 2019
 ;
+; Fixme: examine elephant when sewn - says still open
+; Fixme: sew doll
+; Fixme: sew elephant without putting bugle
+;
 ;------------------------------------------------------------------------------
 ;
 ;
@@ -172,6 +176,7 @@ SOMEO	21	noun
 SOMET	21	noun
 ;
 BUTTO	50	noun		; A button
+EYE	50	noun		; A button
 NEEDL	51	noun		; A needle
 SPECT	52	noun		; A pair of spectacles
 GLASS	52	noun		; A pair of spectacles
@@ -200,8 +205,8 @@ RUG	68	noun		; the rug
 KITCH	69	noun		; the kitchen
 ROLLS	70	noun		; cinnamon roll
 WALL	71	noun		; could be useful
+WALLS	71	noun		; could be useful
 CUPBO	72	noun		; shelves of cupboards
-EYE	73	noun		; so we can write fix eye
 FLASK	74	noun		; bottle of cognac
 COGNA	74	noun		; bottle of cognac
 CUTTE	75	noun		; box cutter
@@ -246,6 +251,7 @@ WAIT	35	verb
 FIX	36	verb
 MEND	36	verb
 ABOUT	37	verb
+CREDI	37	verb
 GIVE	38	verb
 PRESS	39	verb
 DRINK	40	verb
@@ -276,6 +282,7 @@ SHORT   8       adjective
 LONG    9       adjective
 DANCE	138	adjective		; dancer the reindeer
 PRANC	139	adjective		; prancer the reindeer
+SANTA	140	adjective		; the man himself
 ;                               Adverbs
 QUICK   2       adverb
 SLOWL   3       adverb
@@ -289,6 +296,7 @@ TO      2       preposition
 FROM    3       preposition
 IN      4       preposition
 INSID   4       preposition
+INTO	4	preposition
 OUT     5       preposition
 THROU   6       preposition
 OVER    7       preposition
@@ -462,7 +470,18 @@ Merry Night Watch by Peter Villar, December 2019
 
 DAAD compiler 2.42 by Infinite Imaginations and Aventuras AD
 /1
-*** The End, Merry Christmas ***
+This note comes directly from Santa, and it says:
+
+"I am very pleased with the help, I wouldn't have been able
+to do this important task without such assistance!
+
+
+I think I can manage the rest by myself, so take a well reserved
+rest and...  Merry Christmas!
+
+
+S."
+
 /2
 Entrance Hall
 /3
@@ -564,7 +583,7 @@ You close the window.
 /40
 You can barely make out something little and feathery outside the window.
 /41
-The little bird has come on a special errand from Santa!
+The little bird is here on an errand from Santa!
 /42
 A little bird is sitting on the table.
 /43
@@ -600,7 +619,7 @@ The house could use some fresh air, better leave it open.
 /57
 The bird refuses it, chirping angrily while looking at you.
 /58
-The bird grabs the doll with its beak and flies away through the window.
+The bird grabs it with its beak and flies away through the window.
 /59
 The bird drops a note and what looks like a stuffed elephant toy.
 /60
@@ -679,6 +698,10 @@ You put the bugle inside the body of the toy elephant.
 The elephant makes a happy trumpet noise.
 /95
 You sew the elephant back up nice and tightly.
+/96
+No way, after all this effort!
+/97
+The bird drops a note.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -709,6 +732,8 @@ A rag doll
 A bottle of cognac
 /13
 A box cutter
+/14
+A note from Santa
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
@@ -719,7 +744,7 @@ A box cutter
 
 
 
-Christmas eve is tonight and Santa Claus is off to work...
+Christmas Eve is tonight and Santa Claus is off to work...
 
 
 As every year, you have volunteered to be the Christmas Elf-on-duty 
@@ -733,7 +758,7 @@ No shift can possibly be more exciting and rewarding than this one!
 /1
 ; Inside the tub
 /2
-This is the entrance to Santa Claus workshop and home. A dimly lit corridor
+This is the entrance to Santa Claus' workshop and home. A dimly lit corridor
 leads east to the inside of the house.
 /3
 You are in a dimly lit corridor, leading north to the kitchen and south
@@ -834,6 +859,7 @@ W 11
 /11     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    DOLL   _
 /12     7	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    FLASK  _
 /13     12	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    CUTTE  _
+/14     252	1       _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _    NOTE   SANTA
 ;------------------------------------------------------------------------------
 /PRO 0       ;Main Location Loop
 
@@ -1098,6 +1124,13 @@ CUT	ELEPH	CARRIED	13		; box cutter
 		CREATE	10		; rubber duck
 		NEWLINE
 		MESSAGE	68		; inform player
+		SET	71		; now it's open
+		DONE
+
+CUT	ELEPH	CARRIED	13		; box cutter
+		CARRIED	6		; elephant
+		NOTZERO	72		; elephant sewn with bugle inside
+		MESSAGE	96		; why destroy it?
 		DONE
 
 GIVE	DOLL	NOUN2	BIRD		; end of mission one
@@ -1106,8 +1139,9 @@ GIVE	DOLL	NOUN2	BIRD		; end of mission one
 		NOTZERO	64		; eye fixed
 		DESTROY	11		; the bird has it now
 		SET	65		; bird is away
-		SET	67		; We move on to Prancer's quest
+		LET	67	1	; We move on to Prancer's quest
 		CLEAR	Turns		; 10 turns break
+		CLEAR	Turns+1		; 10 turns break
 		MESSAGE	58		; bird flies off thought the window
 		DONE
 
@@ -1125,6 +1159,18 @@ GIVE	FLASK	NOUN2	BIRD		; secret mission
 		SET	65		; send bird away
 		CLEAR	Turns		; 10 turns break
 		DESTROY	12		; no more cognac
+		MESSAGE	58		; bird flies off thought the window
+		DONE
+
+GIVE	ELEPH	NOUN2	BIRD		; elephant
+		AT	8		; santa's office
+		EQ	65	2	; bird waiting inside
+		CARRIED	6		; elephant
+		NOTZERO	72		; sewn with bugle
+		CLEAR	Turns		; 10 turns break
+		PLACE	6	1	; put elephant in limbo room
+		SET	65		; send bird away
+		LET	67	2	; move to Santa phase
 		MESSAGE	58		; bird flies off thought the window
 		DONE
 
@@ -1246,8 +1292,8 @@ _       _       RESET                   ; Set objects to start location & Flag 1
                 SET     CPAdject
 		LET	53	64	; object lists printed as sentences.
 		SET	65		; Bird begins away
-		LET	67	1	; start directly on second quest
-                GOTO    2               ; Main game
+;		LET	67	1	; start directly on second quest
+                GOTO    7               ; Main game starts in the living room
 
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
@@ -1305,8 +1351,9 @@ _	DUCK	ISAT	10	1	; rubber duck in tub?
 		DONE
 
 _	TUB	AT	6		; bathroom
-		MESSAGE	72		; water clean
 		ISAT	10	1	; rubber duck in tub?
+		MESSAGE	72		; water clean
+		NEWLINE
 		MESSAGE	74		; rubber duck swims
 		DONE
 
@@ -1420,12 +1467,17 @@ _	NOTE	ADJECT2	PRANC			; note from prancer the reindeer
 		MESSAGE	18	
 		DONE
 
+_	NOTE	ADJECT2	SANTA			; note from Santa himself
+		PRESENT	14
+		MESSAGE	1			; thank-you letter
+		END
+
 _	NOTE	MESSAGE	44			; we need to know which note
 		DONE
 
 _	BIRD	AT	8			; santa's office
 		EQ	65	1		; bird waiting outside
-		MESSAGE	40			; something birdy
+		MESSAGE	40			; you see something birdy
 		DONE
 
 _	BIRD	AT	8			; santa's office
@@ -1444,12 +1496,21 @@ _	BIRD	AT	8			; santa's office
 
 _	BIRD	AT	8			; santa's office
 		EQ	65	2		; bird waiting inside
-		NOTZERO	67			; Prancer's quest
+		EQ	67	1		; Prancer's quest
 		ISAT	5	252		; note does not exist
 		CREATE	5			; create it
 		CREATE	6			; create the toy elephant
 		NEWLINE
 		MESSAGE	59			; bird carrying note and stuffed elephant
+		DONE
+
+_	BIRD	AT	8			; santa's office
+		EQ	65	2		; bird waiting inside
+		EQ	67	3		; Santa's quest
+		ISAT	14	252		; note does not exist
+		CREATE	14			; create it
+		NEWLINE
+		MESSAGE	97			; bird carrying note
 		DONE
 
 _	BIRD	DONE				; no "nothing of interest" message
@@ -1523,10 +1584,10 @@ _	_	ZERO	65		; is the bird coming / already with us?
 		LET	65	1	; Bird waiting outside
 
 _	_	EQ	65	1	; bird waiting outside?
-		NOTAT	8		; we can see in the description, no need to repeat
 		GT	Turns	10	; some quiet initial exploring
-		NEWLINE
+		NOTAT	8		; we can see in the description, no need to repeat
 		CHANCE	60		; message appears oftenish
+		NEWLINE
 		MESSAGE	34		; Let it be known
 
 _	_	LT	65	2	; bird coming or waiting outside?
@@ -1564,6 +1625,7 @@ _	ELEPH	AT	9		; at the workshop
 		NOTZERO	71		; elephant is open
 		ZERO	72		; not sewn up back 
 		PLACE	7	1	; trumpet to limbo room
+		SET	72		; now sewn up
 		MESSAGE	95		; you sew the elephant back up
 		DONE	
 		
