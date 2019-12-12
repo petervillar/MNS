@@ -6,6 +6,7 @@
 ; Fixme: examine elephant when sewn - says still open
 ; Fixme: sew doll
 ; Fixme: sew elephant without putting bugle
+; Fixme: note from santa says from Dancer when "get note"
 ;
 ;------------------------------------------------------------------------------
 ;
@@ -181,6 +182,7 @@ NEEDL	51	noun		; A needle
 SPECT	52	noun		; A pair of spectacles
 GLASS	52	noun		; A pair of spectacles
 NOTE	53	noun		; different notes
+LETTE	53	noun		; different notes
 ELEPH	54	noun		; toy elephant
 TRUMP	55	noun		; toy bugle
 BUGLE	55	noun		; toy bugle
@@ -472,12 +474,16 @@ DAAD compiler 2.42 by Infinite Imaginations and Aventuras AD
 /1
 This note comes directly from Santa, and it says:
 
-"I am very pleased with the help, I wouldn't have been able
+
+"I am very pleased with your help, I wouldn't have been able
 to do this important task without such assistance!
 
 
 I think I can manage the rest by myself, so take a well reserved
-rest and...  Merry Christmas!
+rest and...
+
+
+Merry Christmas!
 
 
 S."
@@ -1482,10 +1488,6 @@ _	BIRD	AT	8			; santa's office
 
 _	BIRD	AT	8			; santa's office
 		EQ	65	2		; bird waiting inside
-		MESSAGE	41			; "bird came on a special errand!"
-
-_	BIRD	AT	8			; santa's office
-		EQ	65	2		; bird waiting inside
 		ZERO	67			; Dancer's quest
 		ISAT	4	252		; note does not exist
 		CREATE	4			; create it
@@ -1506,14 +1508,19 @@ _	BIRD	AT	8			; santa's office
 
 _	BIRD	AT	8			; santa's office
 		EQ	65	2		; bird waiting inside
-		EQ	67	3		; Santa's quest
+		EQ	67	2		; Santa's quest
 		ISAT	14	252		; note does not exist
 		CREATE	14			; create it
 		NEWLINE
 		MESSAGE	97			; bird carrying note
 		DONE
 
-_	BIRD	DONE				; no "nothing of interest" message
+_	BIRD	AT	8			; santa's office
+		EQ	65	2		; bird waiting inside
+		MESSAGE	41			; "bird came on a special errand!"
+		DONE
+
+;_	BIRD	DONE				; no "nothing of interest" message
 
 _	ELEPH	PRESENT	6			; the elephant
 		ISAT	7	1		; bugle in limbo room
