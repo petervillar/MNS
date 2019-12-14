@@ -4,12 +4,6 @@
 ; Peter Villar - December 2019
 ;
 ; Fixme: message a bird is chirping does not appear
-; Fixme: add response to wait
-; Fixme: add help command: goal: missions + do acts that make things happy or increase happines
-; Fixme: give cognac bird: msg + nobody wants that
-; Fixme: answer to "use strand with needle" -> how exactly?
-; Fixme: xyzzy
-; 
 ;
 ;------------------------------------------------------------------------------
 ;
@@ -275,7 +269,6 @@ ASSEM	45	verb
 STICK	45	verb
 USE	45	verb
 HELP	46	verb
-XYZZY	100	verb
 ;                               Adjectives
 SMALL   2       adjective
 BIG     3       adjective
@@ -579,7 +572,7 @@ The room's large window is slightly open.
 /33
 The room's large window is closed.
 /34
-You hear someone or something tapping at some window in the house.
+You can an hear a light tapping on a window.
 /35
 One of Santa's little bird messengers is waiting outside.
 /36
@@ -601,8 +594,10 @@ The bird leaves a note and what looks like a doll.
 /44
 Which note do you mean?
 /45
-Santa uses the cupboards as a convenient storage for lots of things. One of them
-has a label that reads "emergency spare kit".
+Santa uses the cupboards as a convenient storage for lots of things.
+
+
+One of them has a label that reads "emergency spare kit".
 /46
 You pull the cupboard open, not without some effort.
 /47
@@ -719,9 +714,30 @@ You are not in sewing class right now.
 /100
 You hear a bird chirping somewhere in the house.
 /101
-%
+\/12
 /102
 Score 
+/103
+Time passes...
+/104
+How exactly do you want to use it?
+/105
+Assist Santa and get some extra points by doing acts of kindness!
+
+
+Use the compass directions to move around.
+
+
+Try out the following commands:
+
+
+EXAMINE(X), LOOK (INSIDE, IN ...)
+
+INVENTORY(I), REDESCRIBE(R)
+
+QUIT, SAVE/LOAD and RAMSAVE/RAMLOAD
+
+GET, DROP, WEAR, REMOVE, GIVE ...
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -757,7 +773,7 @@ A note from Santa
 ;------------------------------------------------------------------------------
 /LTX    ;Location Texts
 /0
-          Merry Night Shift
+           Merry Night Shift
 
 
        - A Christmas Adventure -
@@ -776,13 +792,14 @@ No shift can possibly be more exciting and rewarding than this one!
 
 
 /1
-; Inside the tub
+; Limbo room
 /2
 This is the entrance to Santa Claus' workshop and home. A dimly lit corridor
 leads east to the inside of the house.
 /3
 You are in a dimly lit corridor, leading north to the kitchen and south
-to the living room. The corridor continues to the east.
+to the living room. The corridor continues to the east, and to the west
+lies the entrance hall.
 /4
 This is the end of the corridor, with exits north towards the bathroom and
 south towards Santa's office.
@@ -1036,13 +1053,21 @@ THREA	NEEDL	PROCESS	8
 
 SEW	_	PROCESS	10		; all things sewing
 
+USE	NEEDL	CARRIED	1		; needle
+		MESSAGE	104		; how do you want to use it?
+		DONE
+
+USE	STRAN	CARRIED	2		; strand
+		MESSAGE	104		; how do you want to use it?
+		DONE
+
 OPEN	WINDO	AT	8		; at santa's office
 		ZERO	66		; window is closed
 		SET	66		; open it
 		MESSAGE	37		; tell it to player
 		DONE
 
-OPEN	WINDOW	AT	8		; at santa's office
+OPEN	WINDO	AT	8		; at santa's office
 		NOTZERO	66		; is it open?
 		MESSAGE	38		; already open
 		DONE
@@ -1167,7 +1192,7 @@ GIVE	DOLL	NOUN2	BIRD		; end of mission one
 		LET	67	1	; We move on to Prancer's quest
 		CLEAR	Turns		; 10 turns break
 		CLEAR	Turns+1		; 10 turns break
-		PLUS	100	30	; +poäng
+		PLUS	100	3	; +poäng
                 PROCESS 11              ; update status window
 		MESSAGE	58		; bird flies off thought the window
 		DONE
@@ -1186,9 +1211,10 @@ GIVE	FLASK	NOUN2	BIRD		; secret mission
 		SET	65		; send bird away
 		CLEAR	Turns		; 10 turns break
 		DESTROY	12		; no more cognac
-		PLUS	100	15	; +poäng
+		PLUS	100	2	; +poäng
                 PROCESS 11              ; update status window
 		MESSAGE	58		; bird flies off thought the window
+		DONE
 
 GIVE	ELEPH	NOUN2	BIRD		; elephant
 		AT	8		; santa's office
@@ -1199,7 +1225,7 @@ GIVE	ELEPH	NOUN2	BIRD		; elephant
 		PLACE	6	1	; put elephant in limbo room
 		SET	65		; send bird away
 		LET	67	2	; move to Santa phase
-		PLUS	100	30	; +poäng
+		PLUS	100	3	; +poäng
 		PROCESS	11		; update status window
 		MESSAGE	58		; bird flies off thought the window
 		DONE
@@ -1239,7 +1265,7 @@ GET     _       AUTOG
 
 PUT	DUCK	NOUN2	TUB
 		PLACE	10	1	; move duck to limbo room
-		PLUS	100	15	; +poäng
+		PLUS	100	2	; +poäng
                 PROCESS 11              ; update status window
 		MESSAGE	73
 		DONE
@@ -1276,7 +1302,10 @@ DRINK	COGNAC	PRESENT	12
 		MESSAGE	65		; enough
 		DONE
 
-XYZZY	_	LISTAT	1
+HELP	_	MESSAGE	105		; some help
+		DONE
+
+WAIT	_	MESSAGE	103		; Time passes..
 		DONE
 
 QUIT    _       QUIT
@@ -1507,7 +1536,7 @@ _	NOTE	ADJECT2	PRANC		; note from prancer the reindeer
 
 _	NOTE	ADJECT2	SANTA		; note from Santa himself
 		PRESENT	14
-		PLUS	100	10	; +poäng
+		PLUS	100	2	; +poäng
                 PROCESS 11              ; update status window
 		MESSAGE	1		; thank-you letter
 		END
@@ -1622,6 +1651,7 @@ _	_	NOTDONE			; can't do that
 ; Flag 66 used as follows: 0 (window is closed) 255 (window is open)
 
 _	_	EQ	65	255	; Bird away?
+		GT	Turns	10	; allow some quiet initial exploring
 		CHANCE	20		; Give our helper a bit of a rest
 		CLEAR	65		; bird is coming!
 
@@ -1634,21 +1664,21 @@ _	_	EQ	65	1	; bird waiting outside?
 		NOTAT	8		; we can see in the description, no need to repeat
 		CHANCE	60		; message appears oftenish
 		NEWLINE
-		MESSAGE	34		; Let it be known
+		MESSAGE	34		; you hear something/one tapping window
 
 _	_	LT	65	2	; bird coming or waiting outside?
 		NOTZERO	66		; is the window open?
-		LET	65	2	; move the bird inside
 		EQ	38	8	; is the player at Santa's office
+		LET	65	2	; move the bird inside
 		NEWLINE
-		MESSAGE	36		; tell them
+		MESSAGE	36		; a bird lands on the desk
 
 _	_	LT	65	2	; bird coming or waiting outside?
 		NOTZERO	66		; is the window open?
-		LET	65	2	; move the bird inside
 		NOTEQ	38	8	; is the player not at Santa's office
+		LET	65	2	; move the bird inside
 		NEWLINE
-		MESSAGE	100		; tell them
+		MESSAGE	100		; you hear a bird chirping
 ;------------------------------------------------------------------------------
 /PRO 10 ; sewing time
 
@@ -1699,7 +1729,7 @@ _       _       WINDOW  2
                 CLS 
                 MES     [38]
 #if SPE
-                PRINTAT 0 33
+                PRINTAT 0 32
 #endif
 #if CBM64
                 PRINTAT 0 31
@@ -1708,6 +1738,6 @@ _       _       WINDOW  2
                 PRINTAT 0 43
 #endif
                 MES     102
-                PRINT   100             ; score in percentage
+                PRINT   100             ; score
                 MES     101
 		WINDOW	1
