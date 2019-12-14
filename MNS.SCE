@@ -3,10 +3,13 @@
 ; MNS.SCE source code for DAAD V2
 ; Peter Villar - December 2019
 ;
-; Fixme: examine elephant when sewn - says still open
-; Fixme: sew doll
-; Fixme: sew elephant without putting bugle
-; Fixme: note from santa says from Dancer when "get note"
+; Fixme: message a bird is chirping does not appear
+; Fixme: add response to wait
+; Fixme: add help command: goal: missions + do acts that make things happy or increase happines
+; Fixme: give cognac bird: msg + nobody wants that
+; Fixme: answer to "use strand with needle" -> how exactly?
+; Fixme: xyzzy
+; 
 ;
 ;------------------------------------------------------------------------------
 ;
@@ -271,6 +274,7 @@ ATTAC	45	verb
 ASSEM	45	verb
 STICK	45	verb
 USE	45	verb
+HELP	46	verb
 XYZZY	100	verb
 ;                               Adjectives
 SMALL   2       adjective
@@ -344,7 +348,7 @@ You are wearing
 /12
 Are you sure? 
 /13
-Would you like another go? 
+Another game? 
 /14 ;*Spare
 /15
 Ok.
@@ -475,8 +479,8 @@ DAAD compiler 2.42 by Infinite Imaginations and Aventuras AD
 This note comes directly from Santa, and it says:
 
 
-"I am very pleased with your help, I wouldn't have been able
-to do this important task without such assistance!
+"I am very grateful for your help, I wouldn't have been able
+to do this important task without it!
 
 
 I think I can manage the rest by myself, so take a well reserved
@@ -579,7 +583,7 @@ You hear someone or something tapping at some window in the house.
 /35
 One of Santa's little bird messengers is waiting outside.
 /36
-Santa's little messenger enters through the opening and lands on the desk.
+Santa's little messenger enters through the window opening and lands on the desk.
 /37
 You open the window just a little, and you get a nice breeze from the outside.
 /38
@@ -589,11 +593,11 @@ You close the window.
 /40
 You can barely make out something little and feathery outside the window.
 /41
-The little bird is here on an errand from Santa!
+The little bird is here on an errand from Santa.
 /42
 A little bird is sitting on the table.
 /43
-The bird drops a note and what looks like a doll.
+The bird leaves a note and what looks like a doll.
 /44
 Which note do you mean?
 /45
@@ -627,7 +631,7 @@ The bird refuses it, chirping angrily while looking at you.
 /58
 The bird grabs it with its beak and flies away through the window.
 /59
-The bird drops a note and what looks like a stuffed elephant toy.
+The bird leaves a note and what looks like a stuffed elephant toy.
 /60
 Which note do you mean?
 /61
@@ -650,7 +654,7 @@ Skillfully you cut open the toy, exposing its hollow interior.
 /68
 A rubber duck pops out of it, falling to the ground.
 /69
-You still feel happy after you squeeze it, but only a dull sound comes from it.
+You still feel happy when you squeeze it, but only a dull sound comes from it.
 /70
 Nobody wants that.
 /71
@@ -707,7 +711,17 @@ You sew the elephant back up nice and tightly.
 /96
 No way, after all this effort!
 /97
-The bird drops a note.
+The bird leaves a note.
+/98
+Not without fixing it first.
+/99
+You are not in sewing class right now.
+/100
+You hear a bird chirping somewhere in the house.
+/101
+%
+/102
+Score 
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -735,7 +749,7 @@ A rubber duck
 /11
 A rag doll
 /12
-A bottle of cognac
+A flask of cognac
 /13
 A box cutter
 /14
@@ -884,9 +898,14 @@ _       _       WINDOW  0               ; Select graphics window
 _       _       PICTURE [Player]        ; If there is a picture, Load it
                 DISPLAY [DarkF]         ; & Display it if not dark, else CLS
 
-_	_	WINDOW	2
-		CLS
-		MES	[38]
+_	_	PROCESS	11		; print status
+;_	_	WINDOW	2
+;		CLS
+;		MES	[38]
+;		PRINTAT	0	33
+;		MES	102
+;		PRINT	100		; score in percentage
+;		MES	101
 
 _       _       WINDOW  1
                 NOTZERO DarkF           ; Dark
@@ -1114,8 +1133,8 @@ TAKE	BULB	PREP	APART		; so that "take bulb apart" works
 ATTAC	BULB	NOUN2	BUGLE
 		CARRIED	7		; bugle
 		CARRIED	9		; bulb
-		MESSAGE	88		; you do it
 		PLACE	9	1	; no more bulb
+		MESSAGE	88		; you do it
 		DONE
 
 PLAY	BUGLE	CARRIED	7		; the bugle
@@ -1126,11 +1145,11 @@ PLAY	BUGLE	CARRIED	7		; the bugle
 CUT	ELEPH	CARRIED	13		; box cutter
 		CARRIED	6		; elephant
 		ZERO	71		; not cut
-		MESSAGE	67
 		CREATE	10		; rubber duck
+		SET	71		; now it's open
+		MESSAGE	67
 		NEWLINE
 		MESSAGE	68		; inform player
-		SET	71		; now it's open
 		DONE
 
 CUT	ELEPH	CARRIED	13		; box cutter
@@ -1148,6 +1167,8 @@ GIVE	DOLL	NOUN2	BIRD		; end of mission one
 		LET	67	1	; We move on to Prancer's quest
 		CLEAR	Turns		; 10 turns break
 		CLEAR	Turns+1		; 10 turns break
+		PLUS	100	30	; +poäng
+                PROCESS 11              ; update status window
 		MESSAGE	58		; bird flies off thought the window
 		DONE
 
@@ -1165,8 +1186,9 @@ GIVE	FLASK	NOUN2	BIRD		; secret mission
 		SET	65		; send bird away
 		CLEAR	Turns		; 10 turns break
 		DESTROY	12		; no more cognac
+		PLUS	100	15	; +poäng
+                PROCESS 11              ; update status window
 		MESSAGE	58		; bird flies off thought the window
-		DONE
 
 GIVE	ELEPH	NOUN2	BIRD		; elephant
 		AT	8		; santa's office
@@ -1177,6 +1199,8 @@ GIVE	ELEPH	NOUN2	BIRD		; elephant
 		PLACE	6	1	; put elephant in limbo room
 		SET	65		; send bird away
 		LET	67	2	; move to Santa phase
+		PLUS	100	30	; +poäng
+		PROCESS	11		; update status window
 		MESSAGE	58		; bird flies off thought the window
 		DONE
 
@@ -1198,6 +1222,11 @@ GET	NOTE	ADJECT2	PRANCER
 		GET	5
 		DONE
 
+GET	NOTE	ADJECT2	SANTA
+		PRESENT	14
+		GET	14
+		DONE
+
 GET	DUCK	AT	6		; bathroom
 		ISAT	10	1	; in bath tube
 		MES	74		; duck swimming happily
@@ -1209,8 +1238,10 @@ GET     _       AUTOG
                 DONE
 
 PUT	DUCK	NOUN2	TUB
-		MESSAGE	73
 		PLACE	10	1	; move duck to limbo room
+		PLUS	100	15	; +poäng
+                PROCESS 11              ; update status window
+		MESSAGE	73
 		DONE
 
 PUT	BUGLE	NOUN2	ELEPH
@@ -1271,7 +1302,7 @@ LOOK    _       RESTART
 
 _	_	WINDOW	2
 _	_	WINAT	0	0
-		PAPER	2
+;		PAPER	2
 		WINSIZE	1	127
 		CLS
 
@@ -1375,10 +1406,11 @@ _	BUTTO	PRESENT	0
 		MESSAGE	13
 		DONE
 
-_	NEEDL	PRESENT	1
-		MESSAGE	14
+_	NEEDL	PRESENT	1		; needle
+		MESSAGE	14		; a sewing needle
 		ISAT	2	252
-		MESSAGE	19
+		NEWLINE
+		MESSAGE	19		; needle is threaded
 		DONE
 
 _	STRAN	PRESENT	2
@@ -1390,161 +1422,168 @@ _	SPECT	PRESENT	3
 		DONE
 
 _	WORKB	AT	9
-		ISAT	1	252		; the needle won't disappear
-		MESSAGE	21			; but the thread will
+		ISAT	1	252	; the needle won't disappear
+		MESSAGE	21		; but the thread will
 		NEWLINE
 		MESSAGE	22
-		CREATE	1			; needle
-		CREATE	2			; thread
+		CREATE	1		; needle
+		CREATE	2		; thread
 		DONE
 
 _	WORKB	AT	9
 		MESSAGE	21
 		DONE
 
-_	MIRRO	AT	6			; at the bathroom
-		MESSAGE	29			; reflection looks at you
+_	MIRRO	AT	6		; at the bathroom
+		MESSAGE	29		; reflection looks at you
 		DONE
 
-_	SHELF	AT	6			; at the bathroom
-		ISAT	3	252		; spectacles not created
+_	SHELF	AT	6		; at the bathroom
+		ISAT	3	252	; spectacles not created
 		MES	26
 		SPACE
 		MESSAGE	27
 		CREATE	3
 		DONE
 
-_	SHELF	AT	6			; at the bathroom
+_	SHELF	AT	6		; at the bathroom
 		MESSAGE	26
 		DONE
 
-_	CUPBO	PREP	IN			; inside the cupboard
-		AT	11			; spare parts room
-		NOTZERO	68			; opened?
-		ZERO	69			; Note from Dancer not read yet?
-		MESSAGE	48			; not right now
+_	CUPBO	PREP	IN		; inside the cupboard
+		AT	11		; spare parts room
+		NOTZERO	68		; opened?
+		ZERO	69		; Note from Dancer not read yet?
+		MESSAGE	48		; not right now
 		DONE
 
-_	CUPBO	PREP	IN			; inside the cupboard
-		AT	11			; spare parts room
-		NOTZERO	68			; opened?
-		NOTZERO	69			; Note from Dancer read?
-		ISAT	0	252		; button not created yet
-		CREATE	0			; create the button/eye
-		MESSAGE	49			; you see something round and black
+_	CUPBO	PREP	IN		; inside the cupboard
+		AT	11		; spare parts room
+		NOTZERO	68		; opened?
+		NOTZERO	69		; Note from Dancer read?
+		ISAT	0	252	; button not created yet
+		CREATE	0		; create the button/eye
+		MESSAGE	49		; you see something round and black
 		DONE
 
-_	CUPBO	PREP	IN			; inside the cupboard
-		AT	11			; spare parts room
-		ISNOTAT	0	252		; the button has been created
-		MESSAGE	48			; back to the messy cupboard
+_	CUPBO	PREP	IN		; inside the cupboard
+		AT	11		; spare parts room
+		ISNOTAT	0	252	; the button has been created
+		MESSAGE	48		; back to the messy cupboard
 		DONE
 
-_	CUPBO	AT	11			; spare parts room
-		MESSAGE	45			; emergency spare kit cupboard
+_	CUPBO	AT	11		; spare parts room
+		MESSAGE	45		; emergency spare kit cupboard
 		DONE
 
-_	WALL	AT	11			; spare parts room
+_	WALL	AT	11		; spare parts room
 		DESC	11
 		NEWLINE
 		DONE
 
-_	DOLL	PRESENT	11			; the doll
-		ZERO	64			; missing button
-		MES	30			; doll made from scraps of fabrics
+_	DOLL	PRESENT	11		; the doll
+		ZERO	64		; missing button
+		MES	30		; doll made from scraps of fabrics
 		SPACE
-		MESSAGE	31			; missing eye
+		MESSAGE	31		; missing eye
 		DONE
 
-_	DOLL	PRESENT	11			; the doll
-		MES	30			; doll made from scraps of fabrics
+_	DOLL	PRESENT	11		; the doll
+		MES	30		; doll made from scraps of fabrics
 		SPACE
-		MESSAGE	54			; doll has two eyes
+		MESSAGE	54		; doll has two eyes
 		DONE
 
-_	NOTE	ADJECT2	DANCE			; note from dancer the reindeer
+_	NOTE	ADJECT2	DANCE		; note from dancer the reindeer
 		PRESENT	4
-		SET	69			; mark the note as read, so the button appears
+		SET	69		; mark the note as read, so the button appears
 		MESSAGE	17	
 		DONE
 
-_	NOTE	ADJECT2	PRANC			; note from prancer the reindeer
+_	NOTE	ADJECT2	PRANC		; note from prancer the reindeer
 		PRESENT	5
 		MESSAGE	18	
 		DONE
 
-_	NOTE	ADJECT2	SANTA			; note from Santa himself
+_	NOTE	ADJECT2	SANTA		; note from Santa himself
 		PRESENT	14
-		MESSAGE	1			; thank-you letter
+		PLUS	100	10	; +poäng
+                PROCESS 11              ; update status window
+		MESSAGE	1		; thank-you letter
 		END
 
-_	NOTE	MESSAGE	44			; we need to know which note
+_	NOTE	MESSAGE	44		; we need to know which note
 		DONE
 
-_	BIRD	AT	8			; santa's office
-		EQ	65	1		; bird waiting outside
-		MESSAGE	40			; you see something birdy
+_	BIRD	AT	8		; santa's office
+		EQ	65	1	; bird waiting outside
+		MESSAGE	40		; you see something birdy
 		DONE
 
-_	BIRD	AT	8			; santa's office
-		EQ	65	2		; bird waiting inside
-		ZERO	67			; Dancer's quest
-		ISAT	4	252		; note does not exist
-		CREATE	4			; create it
-		CREATE	11			; create the rag doll as well
+_	BIRD	AT	8		; santa's office
+		EQ	65	2	; bird waiting inside
+		ZERO	67		; Dancer's quest
+		ISAT	4	252	; note does not exist
+		CREATE	4		; create it
+		CREATE	11		; create the rag doll as well
+		MESSAGE	41		; bird on errand
 		NEWLINE
-		MESSAGE	43			; bird carrying note and doll
+		MESSAGE	43		; bird carrying note and doll
 		DONE
 
-_	BIRD	AT	8			; santa's office
-		EQ	65	2		; bird waiting inside
-		EQ	67	1		; Prancer's quest
-		ISAT	5	252		; note does not exist
-		CREATE	5			; create it
-		CREATE	6			; create the toy elephant
+_	BIRD	AT	8		; santa's office
+		EQ	65	2	; bird waiting inside
+		EQ	67	1	; Prancer's quest
+		ISAT	5	252	; note does not exist
+		CREATE	5		; create it
+		CREATE	6		; create the toy elephant
+		MESSAGE	41		; bird on errand
 		NEWLINE
-		MESSAGE	59			; bird carrying note and stuffed elephant
+		MESSAGE	59		; bird carrying note and stuffed elephant
 		DONE
 
-_	BIRD	AT	8			; santa's office
-		EQ	65	2		; bird waiting inside
-		EQ	67	2		; Santa's quest
-		ISAT	14	252		; note does not exist
-		CREATE	14			; create it
+_	BIRD	AT	8		; santa's office
+		EQ	65	2	; bird waiting inside
+		EQ	67	2	; Santa's quest
+		ISAT	14	252	; note does not exist
+		CREATE	14		; create it
+		MESSAGE	41		; bird on errand
 		NEWLINE
-		MESSAGE	97			; bird carrying note
+		MESSAGE	97		; bird carrying note
 		DONE
 
-_	BIRD	AT	8			; santa's office
-		EQ	65	2		; bird waiting inside
-		MESSAGE	41			; "bird came on a special errand!"
+_	BIRD	AT	8		; santa's office
+		EQ	65	2	; bird waiting inside
+		MESSAGE	41		; "bird came on a special errand!"
 		DONE
 
-;_	BIRD	DONE				; no "nothing of interest" message
+;_	BIRD	DONE			; no "nothing of interest" message
 
-_	ELEPH	PRESENT	6			; the elephant
-		ISAT	7	1		; bugle in limbo room
-		MES	90			; ripped open
+_	ELEPH	PRESENT	6		; the elephant
+		ISAT	7	1	; bugle in limbo room
+		ZERO	72		; not sewn
+		MESSAGE	90		; ripped open
 		SPACE
-		MESSAGE	92			; tiny bugle with a bulb inside
+		MESSAGE	92		; tiny bugle with a bulb inside
 		DONE
 
-_	ELEPH	PRESENT	6			; the elephant
-		ISNOTAT	10	252		; duck not created, therefore ripped open
-		MES	90			; ripped open
+_	ELEPH	PRESENT	6		; the elephant
+		ISNOTAT	10	252	; duck not created, therefore ripped open
+		ZERO	72		; not sewn
+		MES	90		; ripped open
 		SPACE
-		MESSAGE	91			; hollow space inside
+		MESSAGE	91		; hollow space inside
 		DONE
 
-_	ELEPH	PRESENT	6			; the elephant
-		MESSAGE	61			; soft and squeezeable
+_	ELEPH	PRESENT	6		; the elephant
+		MESSAGE	61		; soft and squeezeable
 		DONE
 
-_	CUTTE	PRESENT	13			; is the box cutter there?
-		MESSAGE	66			; very convenient
+_	CUTTE	PRESENT	13		; is the box cutter there?
+		MESSAGE	66		; very convenient
 		DONE
 
-_	_	MESSAGE	28			; nothing of interest
+_	_	MESSAGE	28		; nothing of interest
 		DONE
 ;------------------------------------------------------------------------------
 /PRO 8 ; Thread the needle
@@ -1591,7 +1630,7 @@ _	_	ZERO	65		; is the bird coming / already with us?
 		LET	65	1	; Bird waiting outside
 
 _	_	EQ	65	1	; bird waiting outside?
-		GT	Turns	10	; some quiet initial exploring
+		GT	Turns	10	; allow some quiet initial exploring
 		NOTAT	8		; we can see in the description, no need to repeat
 		CHANCE	60		; message appears oftenish
 		NEWLINE
@@ -1604,6 +1643,12 @@ _	_	LT	65	2	; bird coming or waiting outside?
 		NEWLINE
 		MESSAGE	36		; tell them
 
+_	_	LT	65	2	; bird coming or waiting outside?
+		NOTZERO	66		; is the window open?
+		LET	65	2	; move the bird inside
+		NOTEQ	38	8	; is the player not at Santa's office
+		NEWLINE
+		MESSAGE	100		; tell them
 ;------------------------------------------------------------------------------
 /PRO 10 ; sewing time
 
@@ -1631,10 +1676,38 @@ _	ELEPH	AT	9		; at the workshop
 		CARRIED	1		; needle
 		NOTZERO	71		; elephant is open
 		ZERO	72		; not sewn up back 
-		PLACE	7	1	; trumpet to limbo room
+		ISNOTAT	7	1	; trompet not in limbo room (not inside elephant)
+		MESSAGE	98		; elephant not ready
+		DONE
+
+_	ELEPH	AT	9		; at the workshop
+;		CARRIED	6		; elephant
+;		CARRIED	1		; needle
+;		NOTZERO	71		; elephant is open
+;		ZERO	72		; not sewn up back 
+		ISAT	7	1	; trumpet to limbo room
 		SET	72		; now sewn up
 		MESSAGE	95		; you sew the elephant back up
 		DONE	
 		
-_	_	MESSAGE	52		; You don't have everything you need.
+_	_	MESSAGE	99		; not in sewing class
 		DONE
+;------------------------------------------------------------------------------
+/PRO 11 ; print status
+
+_       _       WINDOW  2
+                CLS 
+                MES     [38]
+#if SPE
+                PRINTAT 0 33
+#endif
+#if CBM64
+                PRINTAT 0 31
+#endif
+#if PC
+                PRINTAT 0 43
+#endif
+                MES     102
+                PRINT   100             ; score in percentage
+                MES     101
+		WINDOW	1
