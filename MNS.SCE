@@ -188,6 +188,7 @@ BOTTLE	56	noun		; perfume atomizer
 DUCK	57	noun		; a rubber duck
 BULB	58	noun		; rubber bulb
 WORKB	59	noun		; workbench
+BENCH	59	noun		; workbench
 COTTO	60	noun		; So we can thread the needle with a thread
 STRAN	61	noun		; So we can thread the needle with a thread
 MIRRO	62	noun		; the mirror
@@ -214,6 +215,7 @@ CRATE	76	noun		; wooden crates and boxes
 CARDB	76	noun		; wooden crates and boxes
 BOX	76	noun		; wooden crates and boxes
 BOXES	76	noun		; wooden crates and boxes
+LAMP	77	noun		; lamp
 ;
 TORCH   100     noun
 ;                       Verbs
@@ -572,7 +574,7 @@ The room's large window is slightly open.
 /33
 The room's large window is closed.
 /34
-You can an hear a light tapping on a window.
+You can hear a light tapping on a window.
 /35
 One of Santa's little bird messengers is waiting outside.
 /36
@@ -601,7 +603,7 @@ One of them has a label that reads "emergency spare kit".
 /46
 You pull the cupboard open, not without some effort.
 /47
-The cupboard got stuck and it won't close.
+The cupboard got stuck and won't close.
 /48
 You can't see anything useful in that mess right now.
 /49
@@ -634,7 +636,7 @@ The plush elephant toy is soft and easy to grasp and hug.
 /62
 The elephant quacks when you give it a gentle squeeze.
 /63
-Santa's favourite cognac.
+Santa's favourite.
 /64
 You take a sip, why not?
 
@@ -710,7 +712,7 @@ The bird leaves a note.
 /98
 Not without fixing it first.
 /99
-You are not in sewing class right now.
+Did you skip sewing class?
 /100
 You hear a bird chirping somewhere in the house.
 /101
@@ -722,7 +724,8 @@ Time passes...
 /104
 How exactly do you want to use it?
 /105
-Assist Santa and get some extra points by doing acts of kindness!
+Assist Santa tonight plus get some extra points by performing a couple
+of acts of kindness.
 
 
 Use the compass directions to move around.
@@ -738,6 +741,12 @@ INVENTORY(I), REDESCRIBE(R)
 QUIT, SAVE/LOAD and RAMSAVE/RAMLOAD
 
 GET, DROP, WEAR, REMOVE, GIVE ...
+/106
+The rug is soft and pleasant to walk on.
+/107
+The lamp gives a pleasant and warm light.
+/108
+You're not going cave exploring tonight.
 ;------------------------------------------------------------------------------
 /OTX    ;Object Texts
 /0
@@ -826,7 +835,7 @@ This is a large shop well arranged and fully equipped with all sort of tools use
 by carpenters and wood toy makers.
 
 
-A lantern burns on a wooden workbench, giving adequate illumination to the room.
+A lamp burns on a wooden workbench, giving adequate illumination to the room.
 /10
 This part of the basement is poorly lit, but you can make your way around. There
 are exits to the west and to the south.
@@ -1259,6 +1268,10 @@ GET	DUCK	AT	6		; bathroom
 		MESSAGE	76		; why do it?
 		DONE
 
+GET	LAMP	AT	9		; workshop
+		MESSAGE	108		; mandatory reference
+		DONE
+
 GET     ALL     DOALL   HERE
 GET     _       AUTOG
                 DONE
@@ -1363,6 +1376,14 @@ _       _       RESET                   ; Set objects to start location & Flag 1
 
 ;------------------------------------------------------------------------------
 /PRO 7 ; Examine stuff
+
+_	LAMP	AT	9		; workshop
+		MESSAGE	107		; pleasant and warm light
+		DONE
+
+_	RUG	AT	7		; living room
+		MESSAGE	106		; anchored
+		DONE
 
 _	BUGLE	PRESENT	7		; the bugle
 		ISAT	9	1	; rubber bulb in limbo room
@@ -1694,11 +1715,17 @@ _	BUTTON	AT	9		; at the workshop
 		CARRIED	0		; button
 		CARRIED	1		; needle
 		CARRIED	11		; rag doll
-;		WORN	3		; wearing the spectacles?
-		ISAT	2	252	; thread does not exist thefore needle is threaded
+		ISAT	2	252	; thread does not exist therefore the needle is threaded
 		MESSAGE	53		; You sew the button
 		DESTROY	0		; no more button
 		SET	64		; eye fixed
+		DONE
+
+_	BUTTON	AT	9
+                CARRIED 0               ; button
+                CARRIED 1               ; needle
+                CARRIED 11              ; rag doll
+		MESSAGE	99		; skip class?
 		DONE
 
 _	ELEPH	AT	9		; at the workshop
@@ -1711,17 +1738,13 @@ _	ELEPH	AT	9		; at the workshop
 		DONE
 
 _	ELEPH	AT	9		; at the workshop
-;		CARRIED	6		; elephant
-;		CARRIED	1		; needle
-;		NOTZERO	71		; elephant is open
-;		ZERO	72		; not sewn up back 
 		ISAT	7	1	; trumpet to limbo room
 		SET	72		; now sewn up
 		MESSAGE	95		; you sew the elephant back up
 		DONE	
 		
-_	_	MESSAGE	99		; not in sewing class
-		DONE
+;_	_	MESSAGE	99		; not in sewing class
+;		DONE
 ;------------------------------------------------------------------------------
 /PRO 11 ; print status
 
@@ -1729,10 +1752,10 @@ _       _       WINDOW  2
                 CLS 
                 MES     [38]
 #if SPE
-                PRINTAT 0 32
+                PRINTAT 0 31
 #endif
 #if CBM64
-                PRINTAT 0 31
+                PRINTAT 0 30
 #endif
 #if PC
                 PRINTAT 0 43
