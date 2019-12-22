@@ -3,8 +3,6 @@
 ; MNS.SCE source code for DAAD V2
 ; Peter Villar - December 2019
 ;
-; Fixme: message a bird is chirping does not appear
-;
 ;------------------------------------------------------------------------------
 ;
 ;
