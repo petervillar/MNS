@@ -723,7 +723,7 @@ Time passes...
 How exactly do you want to use it?
 /105
 Assist Santa tonight plus get some extra points by performing a couple
-of acts of kindness.
+of deeds of kindness.
 
 
 Use the compass directions to move around.
@@ -1715,7 +1715,8 @@ _	BUTTON	AT	9		; at the workshop
 		CARRIED	11		; rag doll
 		ISAT	2	252	; thread does not exist therefore the needle is threaded
 		MESSAGE	53		; You sew the button
-		DESTROY	0		; no more button
+;		DESTROY	0		; no more button
+		PLACE	0	1	; no more button
 		SET	64		; eye fixed
 		DONE
 
@@ -1753,7 +1754,7 @@ _       _       WINDOW  2
                 PRINTAT 0 31
 #endif
 #if CBM64
-                PRINTAT 0 30
+                PRINTAT 0 29
 #endif
 #if PC
                 PRINTAT 0 43
